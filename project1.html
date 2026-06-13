@@ -238,7 +238,7 @@
   </div>
   <h1 class="hero-title">K-Means Customer<br><em>Segmentation</em></h1>
   <p class="hero-desc">
-    Mengelompokkan 200 pelanggan ke dalam 4 segmen bermakna menggunakan K-Means Clustering berdasarkan usia, pendapatan tahunan, dan skor pengeluaran — lengkap dengan perhitungan manual dan implementasi Python.
+    Mengelompokkan 200 pelanggan ke dalam 4 segmen bermakna menggunakan K-Means Clustering berdasarkan usia, pendapatan tahunan, dan skor pengeluaran yang lengkap dengan perhitungan manual dan implementasi Python.
   </p>
 
   <div class="stats-strip">
@@ -275,7 +275,7 @@
       Proyek ini menjawab dua pertanyaan utama: <strong>Bagaimana menerapkan K-Means Clustering untuk mengelompokkan pelanggan</strong> berdasarkan usia, pendapatan tahunan, dan skor pengeluaran? Dan <strong>berapa jumlah cluster optimal</strong> serta apa karakteristik masing-masing cluster?
     </p>
     <p class="prose">
-      Dataset yang digunakan adalah Mall Customers Dataset dari Kaggle — 200 entri dengan atribut CustomerID, Gender, Age, Annual Income (k$), dan Spending Score (1–100).
+      Dataset yang digunakan adalah Mall Customers Dataset dari Kaggle dengan 200 entri dengan atribut CustomerID, Gender, Age, Annual Income (k$), dan Spending Score (1–100).
     </p>
   </div>
 
@@ -298,7 +298,7 @@
         <div class="step-num">2</div>
         <div class="step-body">
           <h4>Menentukan Jumlah Cluster Optimal</h4>
-          <p>Menggunakan Elbow Method dengan menghitung WCSS (Within-Cluster Sum of Squares) untuk k=2 hingga k=10. Titik siku teridentifikasi di <strong>k=4</strong> — penambahan cluster setelah ini tidak memberikan penurunan WCSS yang signifikan.</p>
+          <p>Menggunakan Elbow Method dengan menghitung WCSS (Within-Cluster Sum of Squares) untuk k=2 hingga k=10. Titik siku teridentifikasi di <strong>k=4</strong> penambahan cluster setelah ini tidak memberikan penurunan WCSS yang signifikan.</p>
           <span class="step-tag">Elbow Method</span>
           <span class="step-tag">WCSS</span>
         </div>
@@ -329,7 +329,7 @@
   <div class="section">
     <p class="section-label">Hasil Elbow Method</p>
     <h2 class="section-title">WCSS per Jumlah Cluster</h2>
-    <p class="prose">Nilai WCSS dihitung untuk k=2 hingga k=10. Penurunan signifikan terjadi dari k=2 ke k=4, setelah itu kurva mulai mendatar — menunjukkan k=4 sebagai titik optimal.</p>
+    <p class="prose">Nilai WCSS dihitung untuk k=2 hingga k=10. Penurunan signifikan terjadi dari k=2 ke k=4, setelah itu kurva mulai mendatar yang menunjukkan k=4 sebagai titik optimal.</p>
     <table class="metrics-table">
       <thead>
         <tr>
@@ -398,7 +398,7 @@
           <p class="cluster-stat">Income: <span>$86.50k (tinggi)</span></p>
           <p class="cluster-stat">Spending: <span>19.58 (rendah)</span></p>
         </div>
-        <p class="cluster-rec">Promosikan <strong>program loyalitas</strong> — pendapatan tinggi tapi jarang belanja, perlu trigger yang tepat.</p>
+        <p class="cluster-rec">Promosikan <strong>program loyalitas</strong> dengan pendapatan tinggi tapi jarang belanja, perlu trigger yang tepat.</p>
       </div>
     </div>
   </div>
