@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Means Customer Segmentation — Evanda Nur Haliza</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1714;
+    --ink-soft: #4A4440;
+    --teal: #2A7C6F;
+    --teal-light: #E8F5F2;
+    --teal-mid: #C2E0DA;
+    --amber: #C87941;
+    --amber-light: #FDF0E6;
+    --rule: #E2DDD8;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 5vw;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--teal); }
+  .nav-back svg { width: 16px; height: 16px; }
+  .nav-title { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); letter-spacing: 0.04em; }
+
+  /* HERO */
+  .hero {
+    padding: 8rem 5vw 4rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .hero-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .badge {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 3px;
+  }
+  .badge-teal { background: var(--teal-light); color: var(--teal); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-ink { background: #EDEAE6; color: var(--ink-soft); }
+  .hero-title {
+    font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1; color: var(--ink); margin-bottom: 1.25rem;
+  }
+  .hero-title em { font-style: italic; color: var(--teal); }
+  .hero-desc { font-size: 17px; color: var(--ink-soft); line-height: 1.75; max-width: 680px; margin-bottom: 2.5rem; }
+
+  /* STATS STRIP */
+  .stats-strip {
+    display: flex; gap: 0; border: 1px solid var(--rule);
+    border-radius: 8px; overflow: hidden; margin-bottom: 4rem;
+    background: #fff;
+  }
+  .stat-box {
+    flex: 1; padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--rule);
+  }
+  .stat-box:last-child { border-right: none; }
+  .stat-val { font-family: var(--serif); font-size: 2rem; color: var(--teal); line-height: 1; margin-bottom: 4px; }
+  .stat-key { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 0 5vw 6rem; }
+  .section { margin-bottom: 4rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--ink); margin-bottom: 1.5rem; line-height: 1.2;
+  }
+  .prose { font-size: 15px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 1rem; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  hr.divider { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+  /* PIPELINE STEPS */
+  .pipeline { display: flex; flex-direction: column; gap: 0; }
+  .pipeline-step {
+    display: grid; grid-template-columns: 48px 1fr;
+    gap: 1.25rem; padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pipeline-step:first-child { border-top: 1px solid var(--rule); }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--teal); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+  .step-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+  .step-tag {
+    display: inline-block; font-family: var(--mono); font-size: 11px;
+    padding: 2px 8px; border-radius: 3px; background: var(--teal-light);
+    color: var(--teal); margin-top: 6px;
+  }
+
+  /* CLUSTER CARDS */
+  .clusters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+  .cluster-card {
+    border-radius: 8px; padding: 1.25rem;
+    border: 1px solid var(--rule); background: #fff;
+    transition: box-shadow 0.2s;
+  }
+  .cluster-card:hover { box-shadow: 0 4px 16px rgba(42,124,111,0.08); }
+  .cluster-num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem;
+  }
+  .cluster-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.75rem; line-height: 1.4; }
+  .cluster-stats { display: flex; flex-direction: column; gap: 4px; }
+  .cluster-stat { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+  .cluster-stat span { color: var(--teal); font-weight: 500; }
+  .cluster-rec {
+    margin-top: 0.875rem; padding-top: 0.875rem;
+    border-top: 1px solid var(--rule);
+    font-size: 12px; color: var(--ink-soft); line-height: 1.6;
+  }
+
+  /* CODE BLOCK */
+  .code-wrap {
+    background: #1A1714; border-radius: 8px; overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .code-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .code-lang { font-family: var(--mono); font-size: 12px; color: #a09890; }
+  .code-copy {
+    font-family: var(--mono); font-size: 11px; color: #a09890;
+    background: none; border: 1px solid rgba(255,255,255,0.12);
+    padding: 3px 10px; border-radius: 3px; cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .code-copy:hover { color: var(--teal-mid); border-color: var(--teal-mid); }
+  pre {
+    padding: 1.25rem 1.5rem; overflow-x: auto;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7;
+    color: #E8E4E0;
+  }
+  .kw { color: #7ECFC5; } /* keyword */
+  .fn { color: #F0C070; } /* function */
+  .cm { color: #6A6560; } /* comment */
+  .st { color: #C8E6A0; } /* string */
+  .nm { color: #F5A97F; } /* number */
+
+  /* METRICS TABLE */
+  .metrics-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .metrics-table th {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    padding: 0.75rem 1rem; text-align: left;
+    border-bottom: 2px solid var(--rule);
+  }
+  .metrics-table td {
+    padding: 0.875rem 1rem; border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+  .metrics-table tr:last-child td { border-bottom: none; }
+  .metrics-table .val { font-family: var(--mono); color: var(--teal); font-weight: 500; }
+
+  /* TOOLS */
+  .tools-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tool-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 6px;
+    background: #fff; border: 1px solid var(--rule);
+    font-size: 13px; font-weight: 500; color: var(--ink);
+  }
+  .tool-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+
+  /* NEXT PROJECT */
+  .next-wrap {
+    background: var(--ink); border-radius: 12px;
+    padding: 2.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1.5rem; flex-wrap: wrap;
+    margin-top: 4rem;
+  }
+  .next-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-mid); margin-bottom: 0.5rem; }
+  .next-title { font-family: var(--serif); font-size: 1.4rem; color: #fff; line-height: 1.3; }
+  .btn-next {
+    display: inline-block; background: var(--teal); color: #fff;
+    padding: 0.75rem 1.75rem; border-radius: 4px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    white-space: nowrap; transition: background 0.2s;
+  }
+  .btn-next:hover { background: #235f55; }
+
+  @media (max-width: 700px) {
+    .stats-strip { flex-wrap: wrap; }
+    .stat-box { border-right: none; border-bottom: 1px solid var(--rule); min-width: 50%; }
+    .next-wrap { padding: 2rem; }
+    nav .nav-title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Kembali ke Portfolio
+  </a>
+  <span class="nav-title">evanda.nur · project 01</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-meta">
+    <span class="badge badge-teal">Clustering</span>
+    <span class="badge badge-teal">Machine Learning</span>
+    <span class="badge badge-amber">Tugas Akhir Data Mining</span>
+    <span class="badge badge-ink">Universitas Airlangga · 2025</span>
+  </div>
+  <h1 class="hero-title">K-Means Customer<br><em>Segmentation</em></h1>
+  <p class="hero-desc">
+    Mengelompokkan 200 pelanggan ke dalam 4 segmen bermakna menggunakan K-Means Clustering berdasarkan usia, pendapatan tahunan, dan skor pengeluaran — lengkap dengan perhitungan manual dan implementasi Python.
+  </p>
+
+  <div class="stats-strip">
+    <div class="stat-box">
+      <div class="stat-val">200</div>
+      <div class="stat-key">Data pelanggan</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">4</div>
+      <div class="stat-key">Cluster optimal</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">3</div>
+      <div class="stat-key">Fitur analisis</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">k=4</div>
+      <div class="stat-key">Elbow Method</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- LATAR BELAKANG -->
+  <div class="section">
+    <p class="section-label">Konteks</p>
+    <h2 class="section-title">Latar Belakang & Masalah</h2>
+    <p class="prose">
+      Di era digital, konsumen memiliki preferensi yang kompleks sehingga strategi pemasaran tidak bisa lagi bersifat umum. Perusahaan perlu memahami karakteristik pelanggan secara mendalam untuk menyusun strategi yang tepat sasaran.
+    </p>
+    <p class="prose">
+      Proyek ini menjawab dua pertanyaan utama: <strong>Bagaimana menerapkan K-Means Clustering untuk mengelompokkan pelanggan</strong> berdasarkan usia, pendapatan tahunan, dan skor pengeluaran? Dan <strong>berapa jumlah cluster optimal</strong> serta apa karakteristik masing-masing cluster?
+    </p>
+    <p class="prose">
+      Dataset yang digunakan adalah Mall Customers Dataset dari Kaggle — 200 entri dengan atribut CustomerID, Gender, Age, Annual Income (k$), dan Spending Score (1–100).
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PIPELINE -->
+  <div class="section">
+    <p class="section-label">Metodologi</p>
+    <h2 class="section-title">Pipeline Analisis</h2>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Preprocessing & Standarisasi</h4>
+          <p>Menghapus kolom non-numerik (CustomerID, Gender), lalu menstandarisasi Age, Annual Income, dan Spending Score menggunakan Z-score agar skala setiap fitur seragam dan tidak mendominasi perhitungan jarak.</p>
+          <span class="step-tag">StandardScaler</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Menentukan Jumlah Cluster Optimal</h4>
+          <p>Menggunakan Elbow Method dengan menghitung WCSS (Within-Cluster Sum of Squares) untuk k=2 hingga k=10. Titik siku teridentifikasi di <strong>k=4</strong> — penambahan cluster setelah ini tidak memberikan penurunan WCSS yang signifikan.</p>
+          <span class="step-tag">Elbow Method</span>
+          <span class="step-tag">WCSS</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Clustering dengan K-Means++</h4>
+          <p>Menjalankan K-Means dengan inisialisasi K-Means++ untuk centroid awal yang lebih optimal, menghitung Euclidean Distance tiap data ke centroid, dan mengiterasi hingga pengelompokan stabil (tidak ada perpindahan data antar cluster).</p>
+          <span class="step-tag">KMeans++</span>
+          <span class="step-tag">Euclidean Distance</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Interpretasi & Rekomendasi</h4>
+          <p>Menghitung rata-rata fitur per cluster, mengklasifikasikan karakteristik tiap cluster (muda/dewasa/tua, pendapatan tinggi/menengah/rendah), dan menyusun rekomendasi strategi pemasaran yang actionable.</p>
+          <span class="step-tag">Business Insight</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WCSS TABLE -->
+  <div class="section">
+    <p class="section-label">Hasil Elbow Method</p>
+    <h2 class="section-title">WCSS per Jumlah Cluster</h2>
+    <p class="prose">Nilai WCSS dihitung untuk k=2 hingga k=10. Penurunan signifikan terjadi dari k=2 ke k=4, setelah itu kurva mulai mendatar — menunjukkan k=4 sebagai titik optimal.</p>
+    <table class="metrics-table">
+      <thead>
+        <tr>
+          <th>Jumlah Cluster (k)</th>
+          <th>WCSS</th>
+          <th>Penurunan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>k = 2</td><td class="val">389.39</td><td>—</td></tr>
+        <tr><td>k = 3</td><td class="val">295.21</td><td>↓ 94.18</td></tr>
+        <tr><td><strong>k = 4 ✓</strong></td><td class="val"><strong>205.23</strong></td><td><strong>↓ 89.98 (elbow)</strong></td></tr>
+        <tr><td>k = 5</td><td class="val">168.25</td><td>↓ 36.98</td></tr>
+        <tr><td>k = 6</td><td class="val">133.87</td><td>↓ 34.38</td></tr>
+        <tr><td>k = 7</td><td class="val">117.01</td><td>↓ 16.86</td></tr>
+        <tr><td>k = 8</td><td class="val">103.87</td><td>↓ 13.14</td></tr>
+        <tr><td>k = 9</td><td class="val">93.09</td><td>↓ 10.78</td></tr>
+        <tr><td>k = 10</td><td class="val">82.39</td><td>↓ 10.70</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CLUSTER RESULTS -->
+  <div class="section">
+    <p class="section-label">Hasil Clustering</p>
+    <h2 class="section-title">Karakteristik 4 Cluster</h2>
+    <p class="prose" style="margin-bottom:1.5rem;">Setelah iterasi konvergen, terbentuk 4 segmen pelanggan dengan profil yang jelas dan berbeda satu sama lain.</p>
+    <div class="clusters-grid">
+      <div class="cluster-card">
+        <p class="cluster-num">Cluster 0</p>
+        <p class="cluster-name">Pelanggan Rata-rata</p>
+        <div class="cluster-stats">
+          <p class="cluster-stat">Usia: <span>53.98 thn (tua)</span></p>
+          <p class="cluster-stat">Income: <span>$47.71k (rendah)</span></p>
+          <p class="cluster-stat">Spending: <span>39.97 (rendah)</span></p>
+        </div>
+        <p class="cluster-rec">Targetkan dengan <strong>promosi umum</strong> dan produk standar sesuai kemampuan finansial.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="cluster-num">Cluster 1</p>
+        <p class="cluster-name">Pelanggan Premium</p>
+        <div class="cluster-stats">
+          <p class="cluster-stat">Usia: <span>32.88 thn (dewasa)</span></p>
+          <p class="cluster-stat">Income: <span>$86.10k (tinggi)</span></p>
+          <p class="cluster-stat">Spending: <span>81.53 (tinggi)</span></p>
+        </div>
+        <p class="cluster-rec">Targetkan dengan <strong>produk mewah & penawaran eksklusif</strong> sesuai daya beli tinggi.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="cluster-num">Cluster 2</p>
+        <p class="cluster-name">Pelanggan Hemat</p>
+        <div class="cluster-stats">
+          <p class="cluster-stat">Usia: <span>25.44 thn (muda)</span></p>
+          <p class="cluster-stat">Income: <span>$40.00k (rendah)</span></p>
+          <p class="cluster-stat">Spending: <span>60.30 (tinggi)</span></p>
+        </div>
+        <p class="cluster-rec">Tawarkan <strong>diskon & produk nilai tinggi</strong> — muda, aktif belanja meski pendapatan terbatas.</p>
+      </div>
+      <div class="cluster-card">
+        <p class="cluster-num">Cluster 3</p>
+        <p class="cluster-name">Pelanggan Konservatif</p>
+        <div class="cluster-stats">
+          <p class="cluster-stat">Usia: <span>39.37 thn (dewasa)</span></p>
+          <p class="cluster-stat">Income: <span>$86.50k (tinggi)</span></p>
+          <p class="cluster-stat">Spending: <span>19.58 (rendah)</span></p>
+        </div>
+        <p class="cluster-rec">Promosikan <strong>program loyalitas</strong> — pendapatan tinggi tapi jarang belanja, perlu trigger yang tepat.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CODE SNIPPET -->
+  <div class="section">
+    <p class="section-label">Implementasi</p>
+    <h2 class="section-title">Cuplikan Kode Python</h2>
+    <p class="prose">Program dibangun dengan 8 step modular menggunakan Python di VS Code, mulai dari input data via dialog GUI hingga interpretasi otomatis hasil clustering.</p>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">python · elbow_method.py</span>
+        <button class="code-copy" onclick="copyCode(this)">copy</button>
+      </div>
+      <pre><span class="cm"># Step 6: Menentukan Jumlah Cluster Optimal</span>
+<span class="kw">from</span> sklearn.cluster <span class="kw">import</span> KMeans
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+K = <span class="fn">range</span>(<span class="nm">2</span>, <span class="nm">11</span>)
+inertia = []
+
+<span class="kw">for</span> k <span class="kw">in</span> K:
+    kmeans = <span class="fn">KMeans</span>(n_clusters=k, random_state=<span class="nm">42</span>, n_init=<span class="nm">10</span>)
+    kmeans.<span class="fn">fit</span>(X_scaled)
+    inertia.<span class="fn">append</span>(kmeans.inertia_)
+
+<span class="cm"># Deteksi elbow point otomatis</span>
+diff  = np.<span class="fn">diff</span>(inertia)
+diff2 = np.<span class="fn">diff</span>(diff)
+k_optimal = K[np.<span class="fn">argmax</span>(diff2) + <span class="nm">1</span>]
+<span class="cm"># → k_optimal = 4</span></pre>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">python · clustering.py</span>
+        <button class="code-copy" onclick="copyCode(this)">copy</button>
+      </div>
+      <pre><span class="cm"># Step 7: K-Means Clustering dengan inisialisasi K-Means++</span>
+kmeans = <span class="fn">KMeans</span>(
+    n_clusters=<span class="nm">4</span>,
+    init=<span class="st">'k-means++'</span>,
+    random_state=<span class="nm">42</span>,
+    n_init=<span class="nm">10</span>
+)
+kmeans.<span class="fn">fit</span>(X_scaled)
+labels = kmeans.labels_
+
+<span class="cm"># Tambahkan label ke dataframe asli</span>
+data[<span class="st">'Cluster'</span>] = labels
+
+<span class="cm"># Rata-rata per cluster untuk interpretasi</span>
+cluster_summary = data.<span class="fn">groupby</span>(<span class="st">'Cluster'</span>)[fitur_terpilih].<span class="fn">mean</span>()
+<span class="fn">print</span>(cluster_summary)</pre>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TOOLS -->
+  <div class="section">
+    <p class="section-label">Tech Stack</p>
+    <h2 class="section-title">Tools & Library</h2>
+    <div class="tools-wrap">
+      <div class="tool-chip"><span class="dot"></span>Python 3</div>
+      <div class="tool-chip"><span class="dot"></span>Scikit-learn</div>
+      <div class="tool-chip"><span class="dot"></span>Pandas</div>
+      <div class="tool-chip"><span class="dot"></span>NumPy</div>
+      <div class="tool-chip"><span class="dot"></span>Matplotlib</div>
+      <div class="tool-chip"><span class="dot"></span>StandardScaler</div>
+      <div class="tool-chip"><span class="dot"></span>KMeans++</div>
+      <div class="tool-chip"><span class="dot"></span>VS Code</div>
+      <div class="tool-chip"><span class="dot"></span>Kaggle Dataset</div>
+    </div>
+  </div>
+
+  <!-- NEXT PROJECT -->
+  <div class="next-wrap">
+    <div>
+      <p class="next-label">Proyek Selanjutnya</p>
+      <p class="next-title">Prediksi Volume Barang<br>di Pelabuhan Kalimas</p>
+    </div>
+    <a href="project2.html" class="btn-next">Lihat Proyek →</a>
+  </div>
+
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 2000);
+  });
+}
+</script>
+
+</body>
+</html>

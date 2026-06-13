@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evanda Nur Haliza — Data Analyst Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1714;
+    --ink-soft: #4A4440;
+    --teal: #2A7C6F;
+    --teal-light: #E8F5F2;
+    --teal-mid: #C2E0DA;
+    --amber: #C87941;
+    --amber-light: #FDF0E6;
+    --rule: #E2DDD8;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 5vw;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 5vw 5rem;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-text { flex: 1; }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1.25rem;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.08;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--teal);
+  }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 1.75rem;
+    letter-spacing: 0.02em;
+  }
+  .hero-desc {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    padding: 0.75rem 1.75rem;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: #235f55; transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-block;
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    padding: 0.75rem 1.75rem;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
+
+  .hero-photo-wrap {
+    flex-shrink: 0;
+    position: relative;
+  }
+  .hero-photo {
+    width: 260px; height: 320px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    background: var(--teal-mid);
+  }
+  .photo-placeholder {
+    width: 260px; height: 320px;
+    border-radius: 8px;
+    background: var(--teal-mid);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.75rem;
+    color: var(--teal);
+  }
+  .photo-placeholder svg { width: 56px; height: 56px; opacity: 0.6; }
+  .photo-placeholder span { font-size: 12px; font-family: var(--mono); opacity: 0.7; text-align: center; padding: 0 1rem; }
+  .photo-accent {
+    position: absolute;
+    bottom: -16px; right: -16px;
+    width: 100px; height: 100px;
+    border-radius: 4px;
+    background: var(--amber-light);
+    border: 2px solid var(--amber);
+    z-index: -1;
+  }
+  .stats-row {
+    display: flex; gap: 1.5rem; margin-top: 3rem; flex-wrap: wrap;
+  }
+  .stat { }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2rem;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+  .stat-divider {
+    width: 1px; background: var(--rule); align-self: stretch; margin: 4px 0;
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 5vw; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    line-height: 1.15;
+    margin-bottom: 3rem;
+    color: var(--ink);
+  }
+  .section-divider {
+    border: none; border-top: 1px solid var(--rule);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+  }
+  .skill-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .skill-card:hover {
+    border-color: var(--teal-mid);
+    box-shadow: 0 4px 16px rgba(42,124,111,0.08);
+  }
+  .skill-category {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+  .skill-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+  .project-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26,23,20,0.08);
+  }
+  .project-thumb {
+    height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #fff;
+    padding: 1.5rem;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .project-thumb.teal { background: linear-gradient(135deg, #2A7C6F 0%, #1a5c52 100%); }
+  .project-thumb.amber { background: linear-gradient(135deg, #C87941 0%, #a05e2e 100%); }
+  .project-thumb.ink { background: linear-gradient(135deg, #3a3330 0%, #1A1714 100%); }
+  .project-body { padding: 1.5rem; }
+  .project-type {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.5rem;
+  }
+  .project-body h3 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+  .project-body p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+  .project-tag {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+  .project-metrics {
+    display: flex; gap: 1rem;
+    padding: 0.875rem 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 0.25rem;
+  }
+  .metric { }
+  .metric-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--teal);
+  }
+  .metric-key {
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  /* EXPERIENCE */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .exp-item:first-child { border-top: 1px solid var(--rule); }
+  .exp-period {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding-top: 3px;
+  }
+  .exp-company {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .exp-role {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+  .exp-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .exp-desc li { margin-left: 1.2rem; margin-bottom: 0.35rem; }
+
+  /* CONTACT */
+  .contact-wrap {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 2rem; flex-wrap: wrap;
+  }
+  .contact-left .section-label { color: var(--teal-mid); }
+  .contact-title {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+  .contact-sub { font-size: 14px; color: #a09890; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: var(--mono);
+    transition: color 0.2s;
+  }
+  .contact-link:hover { color: var(--teal-mid); }
+  .contact-link-icon {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 5vw;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (max-width: 700px) {
+    .hero { flex-direction: column-reverse; gap: 2rem; padding-top: 7rem; }
+    .hero-photo-wrap { align-self: center; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .exp-period { padding-top: 0; }
+    .contact-wrap { padding: 2.5rem; }
+    nav .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="#">evanda.nur</a>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Data Analyst · Fresh Graduate</p>
+    <h1 class="hero-name">Evanda<br><em>Nur Haliza</em></h1>
+    <p class="hero-role">S-1 Matematika · Universitas Airlangga · 2026</p>
+    <p class="hero-desc">
+      Fresh graduate Matematika dengan pengalaman praktis di bidang data analytics — dari clustering pelanggan, forecasting volume barang, hingga storytelling data untuk business decision.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">Lihat Proyek</a>
+      <a href="#contact" class="btn-ghost">Hubungi Aku</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Proyek Analisis</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Magang Korporat</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Cluster Segmentasi</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-photo-wrap">
+    <div class="photo-placeholder">
+      <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="32" cy="22" r="12" fill="#2A7C6F" opacity="0.5"/>
+        <path d="M8 56c0-13.255 10.745-24 24-24s24 10.745 24 24" fill="#2A7C6F" opacity="0.4"/>
+      </svg>
+      <span>Foto profil<br>akan ditambahkan di sini</span>
+    </div>
+    <div class="photo-accent"></div>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Portfolio</p>
+  <h2 class="section-title">Proyek Analisis Data</h2>
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <div class="project-thumb teal">K-Means Customer Segmentation</div>
+      <div class="project-body">
+        <p class="project-type">Clustering · Machine Learning</p>
+        <h3>Segmentasi Pelanggan Berdasarkan Usia, Pendapatan & Spending Score</h3>
+        <p>Mengelompokkan pelanggan ke dalam 4 cluster bermakna menggunakan K-Means Clustering, dengan analisis EDA, preprocessing, dan visualisasi interaktif untuk mendukung strategi promosi berbasis data.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Scikit-learn</span>
+          <span class="project-tag">Pandas</span>
+          <span class="project-tag">Plotly</span>
+          <span class="project-tag">K-Means</span>
+        </div>
+        <div class="project-metrics">
+          <div class="metric">
+            <div class="metric-val">4</div>
+            <div class="metric-key">Cluster terbentuk</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">200</div>
+            <div class="metric-key">Data pelanggan</div>
+          </div>
+        </div>
+        <a href="project1.html" style="display:inline-block;margin-top:0.75rem;background:var(--teal);color:#fff;padding:0.5rem 1.25rem;border-radius:4px;font-size:13px;font-weight:600;text-decoration:none;">Lihat Detail →</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-thumb amber">Linear Regression Forecasting</div>
+      <div class="project-body">
+        <p class="project-type">Forecasting · Regression</p>
+        <h3>Prediksi Volume Barang (Ton) di Pelabuhan Kalimas</h3>
+        <p>Membangun model forecasting berbasis Regresi Linear dari 60 data historis bulanan (2020–2024) untuk memprediksi volume barang 36 bulan ke depan, dievaluasi dengan MAPE.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Excel</span>
+          <span class="project-tag">Regresi Linear</span>
+          <span class="project-tag">MAPE</span>
+          <span class="project-tag">Forecasting</span>
+        </div>
+        <div class="project-metrics">
+          <div class="metric">
+            <div class="metric-val">60</div>
+            <div class="metric-key">Data historis</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">36 bln</div>
+            <div class="metric-key">Horizon prediksi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-thumb ink">Data Storytelling: Online Food Business</div>
+      <div class="project-body">
+        <p class="project-type">Data Storytelling · EDA · Visualisasi</p>
+        <h3>Analisis Perilaku Pelanggan Platform Makanan Online</h3>
+        <p>Menganalisis dataset pelanggan platform online food untuk mengungkap 3 insight utama: segmen usia dominan, pengaruh pendapatan terhadap kepuasan, dan hubungan pendidikan–penghasilan. Disajikan dalam infografis dan slide storytelling.</p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">EDA</span>
+          <span class="project-tag">K-Means</span>
+          <span class="project-tag">Visualisasi</span>
+          <span class="project-tag">Storytelling</span>
+        </div>
+        <div class="project-metrics">
+          <div class="metric">
+            <div class="metric-val">3</div>
+            <div class="metric-key">Key insights</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">+20–30%</div>
+            <div class="metric-key">Potensi revenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <p class="section-label">Pengalaman</p>
+  <h2 class="section-title">Perjalanan Karier</h2>
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-period">Okt 2025 – Jan 2026</div>
+      <div>
+        <p class="exp-company">PT. Telekomunikasi Indonesia</p>
+        <p class="exp-role">Magang — Engineering & Deployment</p>
+        <ul class="exp-desc">
+          <li>Mapping & validasi ±200 data proyek per hari menggunakan VLOOKUP</li>
+          <li>Verifikasi kelengkapan ±90 dokumen proyek per hari berdasarkan checklist standar</li>
+          <li>Mengonsolidasikan data dari beberapa file regional menjadi satu laporan ringkasan menggunakan VLOOKUP, HLOOKUP, dan Pivot Table</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Sep 2025 – Nov 2025</div>
+      <div>
+        <p class="exp-company">PT. Vinix Seven Aurum</p>
+        <p class="exp-role">Junior Data Scientist (Studi Independen)</p>
+        <ul class="exp-desc">
+          <li>EDA, preprocessing, visualisasi, dan analisis statistik dataset studi kasus menggunakan Python</li>
+          <li>Membangun model prediksi (Linear Regression & Random Forest) pada dataset 398 baris, dievaluasi dengan R² dan RMSE</li>
+          <li>Segmentasi 200 data pelanggan menggunakan K-Means Clustering (4 cluster), disajikan via dashboard dan infografis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-period">Des 2024 – Jan 2025</div>
+      <div>
+        <p class="exp-company">PT. Pelindo (Persero)</p>
+        <p class="exp-role">Magang — Manajemen Mutu Risiko</p>
+        <ul class="exp-desc">
+          <li>Mengolah 60 data historis bulanan volume barang (2020–2024) di Excel</li>
+          <li>Membangun model forecasting berbasis Regresi Linear untuk prediksi 36 bulan ke depan</li>
+          <li>Evaluasi akurasi model menggunakan MAPE</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">Kemampuan</p>
+  <h2 class="section-title">Tech Stack & Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <p class="skill-category">Programming</p>
+      <h4>Bahasa & Analisis</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">R</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">SPSS</span>
+        <span class="skill-tag">Minitab</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <p class="skill-category">Machine Learning</p>
+      <h4>Pemodelan & Algoritma</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">Regresi Linear</span>
+        <span class="skill-tag">Random Forest</span>
+        <span class="skill-tag">K-Means</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <p class="skill-category">Spreadsheet</p>
+      <h4>Data Processing</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Excel</span>
+        <span class="skill-tag">Google Sheets</span>
+        <span class="skill-tag">VLOOKUP</span>
+        <span class="skill-tag">Pivot Table</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <p class="skill-category">Visualisasi</p>
+      <h4>BI & Storytelling</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Plotly</span>
+        <span class="skill-tag">Google Data Studio</span>
+        <span class="skill-tag">Dashboard</span>
+        <span class="skill-tag">Infografis</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <p class="skill-category">Matematika</p>
+      <h4>Fondasi Analitik</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Statistika</span>
+        <span class="skill-tag">Optimasi</span>
+        <span class="skill-tag">Data Mining</span>
+        <span class="skill-tag">Pemodelan</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <p class="skill-category">Soft Skills</p>
+      <h4>Interpersonal</h4>
+      <div class="skill-tags">
+        <span class="skill-tag">Analytical Thinking</span>
+        <span class="skill-tag">Problem Solving</span>
+        <span class="skill-tag">Komunikasi</span>
+        <span class="skill-tag">Teamwork</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-left">
+      <p class="section-label">Kontak</p>
+      <h2 class="contact-title">Mari Berkolaborasi</h2>
+      <p class="contact-sub">Terbuka untuk peluang full-time, magang, atau diskusi proyek.</p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:evandanurhaliza072@gmail.com" class="contact-link">
+        <div class="contact-link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+        evandanurhaliza072@gmail.com
+      </a>
+      <a href="https://linkedin.com/in/evanda-nur-haliza" target="_blank" class="contact-link">
+        <div class="contact-link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </div>
+        linkedin.com/in/evanda-nur-haliza
+      </a>
+      <a href="tel:+6287784792009" class="contact-link">
+        <div class="contact-link-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        </div>
+        +62 877-8479-2009
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Evanda Nur Haliza · Dibuat dengan HTML · Surabaya, Jawa Timur</p>
+</footer>
+
+</body>
+</html>
