@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forecasting Pelabuhan Kalimas — Evanda Nur Haliza</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1714;
+    --ink-soft: #4A4440;
+    --teal: #1a6b5e;
+    --teal-light: #E8F5F2;
+    --teal-mid: #C2E0DA;
+    --amber: #b8860b;
+    --amber-light: #fff8e1;
+    --rule: #E2DDD8;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 5vw;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-name {
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em; color: var(--ink); text-decoration: none;
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 13px; font-weight: 500; color: var(--ink-soft);
+    text-decoration: none; font-family: var(--mono);
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--teal); }
+  .nav-back svg { width: 14px; height: 14px; }
+
+  /* HERO */
+  .project-hero {
+    background: linear-gradient(135deg, rgba(160,94,46,0.82) 0%, rgba(26,23,20,0.85) 100%),
+    url('https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=1400&q=80') center/cover no-repeat;
+    padding: 8rem 5vw 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-inner {
+    max-width: 900px; margin: 0 auto; position: relative;
+  }
+  .hero-type {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.7);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1; color: #fff;
+    margin-bottom: 1.25rem;
+  }
+  .hero-title em { font-style: italic; color: rgba(255,255,255,0.75); }
+  .hero-sub {
+    font-size: 16px; color: rgba(255,255,255,0.8);
+    max-width: 560px; line-height: 1.7; margin-bottom: 2rem;
+  }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hero-tag {
+    font-family: var(--mono); font-size: 11px;
+    padding: 4px 10px; border-radius: 3px;
+    background: rgba(255,255,255,0.15); color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+
+  /* KEY METRICS BAR */
+  .metrics-bar {
+    background: var(--ink); padding: 2rem 5vw;
+  }
+  .metrics-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; gap: 0; flex-wrap: wrap;
+  }
+  .metric-item {
+    flex: 1; min-width: 140px;
+    padding: 0.5rem 2rem 0.5rem 0;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .metric-item:last-child { border-right: none; padding-right: 0; }
+  .metric-val {
+    font-family: var(--serif); font-size: 2rem;
+    color: #C87941; line-height: 1;
+  }
+  .metric-label {
+    font-family: var(--mono); font-size: 11px;
+    color: rgba(255,255,255,0.5); margin-top: 4px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  /* MAIN CONTENT */
+  .content-wrap {
+    max-width: 900px; margin: 0 auto; padding: 4rem 5vw;
+  }
+
+  /* KEY INSIGHTS */
+  .insights-section { margin-bottom: 4rem; }
+  .section-eyebrow {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 0.5rem;
+  }
+  .section-heading {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 1.5rem; color: var(--ink);
+  }
+  .insights-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .insight-card {
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 1.5rem;
+    border-left: 3px solid var(--amber);
+    transition: box-shadow 0.2s;
+  }
+  .insight-card:hover { box-shadow: 0 4px 16px rgba(26,23,20,0.07); }
+  .insight-num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--amber); margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+  .insight-card p { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+
+  /* DIVIDER */
+  .section-rule { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+  /* BACKGROUND */
+  .background-section { margin-bottom: 4rem; }
+  .background-section p {
+    font-size: 15px; color: var(--ink-soft);
+    line-height: 1.8; margin-bottom: 1rem;
+  }
+
+  /* METODOLOGI */
+  .method-section { margin-bottom: 4rem; }
+  .method-steps { display: flex; flex-direction: column; gap: 0; }
+  .method-step {
+    display: grid; grid-template-columns: 56px 1fr;
+    gap: 1.5rem; padding: 1.75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .method-step:first-child { border-top: 1px solid var(--rule); }
+  .step-num {
+    font-family: var(--serif); font-size: 1.75rem;
+    color: var(--teal-mid); line-height: 1; padding-top: 2px;
+  }
+  .step-content h4 {
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+  .step-content p { font-size: 14px; color: var(--ink-soft); line-height: 1.65; }
+
+  /* FORMULA BOX */
+  .formula-box {
+    background: var(--ink); border-radius: 8px;
+    padding: 1.5rem 2rem; margin: 1.5rem 0;
+    font-family: var(--mono); color: #fff;
+    font-size: 14px; line-height: 2;
+    overflow-x: auto;
+  }
+  .formula-box .formula-label {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .formula-box .formula-main { color: #C87941; font-size: 16px; }
+  .formula-box .formula-result { color: var(--teal-mid); }
+
+  /* CHART */
+  .chart-section { margin-bottom: 4rem; }
+  .chart-container {
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 2rem; margin-top: 1.5rem;
+  }
+  .chart-title {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--ink-soft); margin-bottom: 1.5rem;
+    text-align: center; letter-spacing: 0.06em;
+  }
+  canvas { width: 100% !important; }
+
+  /* MAPE BADGE */
+  .mape-badge {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--amber-light); border: 1px solid var(--amber);
+    border-radius: 6px; padding: 0.75rem 1.25rem;
+    margin-top: 1rem;
+  }
+  .mape-val { font-family: var(--mono); font-size: 1.5rem; color: var(--amber); font-weight: 500; }
+  .mape-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.4; }
+
+  /* TABLE */
+  .table-section { margin-bottom: 4rem; }
+  .table-scroll { overflow-x: auto; margin-top: 1.5rem; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; font-family: var(--mono);
+  }
+  thead tr { background: var(--ink); color: #fff; }
+  thead th {
+    padding: 0.75rem 1rem; text-align: left;
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 500;
+  }
+  tbody tr { border-bottom: 1px solid var(--rule); transition: background 0.15s; }
+  tbody tr:hover { background: var(--teal-light); }
+  tbody td { padding: 0.65rem 1rem; color: var(--ink-soft); }
+  tbody td:first-child { color: var(--ink); font-weight: 500; }
+  .td-highlight { color: var(--teal) !important; font-weight: 500; }
+  .year-header td {
+    background: var(--teal-light); color: var(--teal) !important;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.5rem 1rem; font-weight: 600;
+  }
+
+  /* KESIMPULAN */
+  .conclusion-section { margin-bottom: 4rem; }
+  .conclusion-box {
+    background: #fff; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 2rem;
+  }
+  .conclusion-box p { font-size: 15px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 1rem; }
+  .conclusion-box p:last-child { margin-bottom: 0; }
+
+  /* SARAN */
+  .saran-box {
+    background: var(--amber-light); border: 1px solid #e5c96a;
+    border-radius: 8px; padding: 1.5rem 2rem; margin-top: 1.5rem;
+  }
+  .saran-box h4 { font-size: 14px; font-weight: 600; color: var(--amber); margin-bottom: 0.5rem; }
+  .saran-box p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+
+  /* FOOTER NAV */
+  .project-footer {
+    border-top: 1px solid var(--rule);
+    padding: 2rem 5vw;
+    max-width: 900px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-back {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 13px;
+    color: var(--ink-soft); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-back:hover { color: var(--teal); }
+  .footer-note { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); opacity: 0.6; }
+
+  @media (max-width: 600px) {
+    .metrics-inner { gap: 1.5rem; }
+    .metric-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 0 1rem; }
+    .metric-item:last-child { border-bottom: none; }
+    .method-step { grid-template-columns: 1fr; gap: 0.5rem; }
+    .step-num { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-name" href="index.html">evanda.nur</a>
+  <a class="nav-back" href="index.html#projects">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Kembali ke Proyek
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="project-hero">
+  <div class="hero-inner">
+    <p class="hero-type">Forecasting · Regresi Linear · PKL</p>
+    <h1 class="hero-title">Prediksi Volume Barang<br><em>di Pelabuhan Kalimas</em></h1>
+    <p class="hero-sub">
+      Membangun model forecasting berbasis Regresi Linear dari 60 data historis bulanan (2020–2024) untuk memprediksi volume barang 36 bulan ke depan, dievaluasi dengan MAPE.
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">Python</span>
+      <span class="hero-tag">Excel</span>
+      <span class="hero-tag">Regresi Linear</span>
+      <span class="hero-tag">MAPE</span>
+      <span class="hero-tag">Forecasting</span>
+      <span class="hero-tag">PKL PT Pelindo</span>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS BAR -->
+<div class="metrics-bar">
+  <div class="metrics-inner">
+    <div class="metric-item">
+      <div class="metric-val">60</div>
+      <div class="metric-label">Data historis (bln)</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">36</div>
+      <div class="metric-label">Bulan prediksi</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">31,1%</div>
+      <div class="metric-label">Nilai MAPE</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">2025–2027</div>
+      <div class="metric-label">Periode forecast</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+
+  <!-- KEY INSIGHTS -->
+  <div class="insights-section">
+    <p class="section-eyebrow">Key Insights</p>
+    <h2 class="section-heading">Temuan Utama Proyek</h2>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <p class="insight-num">INSIGHT 01</p>
+        <p>Model regresi linear menunjukkan tren <strong>penurunan bertahap</strong> volume barang di Pelabuhan Kalimas, dari ~21.596 ton (Jan 2025) hingga ~20.616 ton (Des 2027).</p>
+      </div>
+      <div class="insight-card">
+        <p class="insight-num">INSIGHT 02</p>
+        <p>Nilai MAPE 31,1% masuk kategori <strong>cukup akurat</strong>, mengindikasikan fluktuasi musiman yang tidak sepenuhnya tertangkap oleh model linear — peluang untuk dikembangkan dengan ARIMA.</p>
+      </div>
+      <div class="insight-card">
+        <p class="insight-num">INSIGHT 03</p>
+        <p>Prediksi stabil pada kisaran <strong>20.000–22.000 ton/bulan</strong> memberikan baseline bagi manajemen Pelindo untuk merencanakan kapasitas dermaga dan alokasi SDM secara lebih efisien.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- LATAR BELAKANG -->
+  <div class="background-section">
+    <p class="section-eyebrow">Latar Belakang</p>
+    <h2 class="section-heading">Konteks & Tujuan</h2>
+    <p>Pelabuhan Kalimas merupakan bagian dari kompleks Pelabuhan Tanjung Perak Surabaya yang berperan strategis dalam distribusi logistik nasional. Fluktuasi volume barang yang tidak terprediksi berdampak langsung pada efisiensi operasional — dari kapasitas dermaga hingga alokasi tenaga kerja bongkar muat.</p>
+    <p>Proyek ini dilakukan dalam rangka Praktik Kerja Lapangan di PT Pelindo (Persero) Sub Regional Jawa, dengan tujuan membangun model prediktif berbasis data historis 2020–2024 untuk memproyeksikan volume barang selama 3 tahun ke depan (2025–2027). Data diperoleh langsung dari divisi Manajemen Mutu dan Risiko PT Pelindo dan bersifat rahasia perusahaan.</p>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- METODOLOGI -->
+  <div class="method-section">
+    <p class="section-eyebrow">Metodologi</p>
+    <h2 class="section-heading">Alur Analisis</h2>
+    <div class="method-steps">
+      <div class="method-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Pengumpulan & Preprocessing Data</h4>
+          <p>60 data historis bulanan volume barang (ton) periode Januari 2020 – Desember 2024 dikumpulkan dari PT Pelindo Sub Regional Jawa. Data dibersihkan dan diindeks secara berurutan (x = 1 hingga 60) untuk keperluan regresi.</p>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Pembangunan Model Regresi Linear</h4>
+          <p>Model regresi linear sederhana dibangun menggunakan metode Ordinary Least Squares (OLS). Variabel independen adalah indeks waktu (x), dan variabel dependen adalah volume barang dalam ton (y).</p>
+          <div class="formula-box">
+            <div class="formula-label">Persamaan Regresi Linear</div>
+            <div class="formula-main">ŷ = a + bx</div>
+            <div style="margin-top:0.75rem; font-size:13px; color:rgba(255,255,255,0.6);">
+              a = 23.305,450542 &nbsp;|&nbsp; b = −28,013378
+            </div>
+            <div class="formula-result" style="margin-top:0.5rem;">
+              ŷ = 23.305,450542 − 28,013378x
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--ink-soft);margin-top:0.75rem;">Koefisien b negatif menunjukkan tren penurunan volume barang sekitar 28 ton per bulan secara rata-rata.</p>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Evaluasi Akurasi dengan MAPE</h4>
+          <p>Akurasi model dievaluasi menggunakan Mean Absolute Percentage Error (MAPE) — metode yang mengukur persentase rata-rata selisih antara nilai aktual dan nilai prediksi.</p>
+          <div class="formula-box">
+            <div class="formula-label">Formula MAPE</div>
+            <div class="formula-main">MAPE = (100%/n) × Σ |Xt − Ft| / Xt</div>
+            <div class="formula-result" style="margin-top:0.75rem;">Hasil: MAPE = 31,14% → Kategori Cukup Akurat</div>
+          </div>
+          <div class="mape-badge">
+            <div class="mape-val">31,14%</div>
+            <div class="mape-desc">Cukup Akurat<br><span style="font-size:12px;opacity:0.7;">Rentang 20%–50% berdasarkan kategori MAPE</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Prediksi 36 Bulan ke Depan</h4>
+          <p>Menggunakan persamaan regresi yang telah dibangun, dilakukan prediksi volume barang untuk periode Januari 2025 – Desember 2027 (indeks x = 61 hingga 96) menggunakan Microsoft Excel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- CHART -->
+  <div class="chart-section">
+    <p class="section-eyebrow">Visualisasi</p>
+    <h2 class="section-heading">Grafik Hasil Forecasting</h2>
+    <div class="chart-container">
+      <p class="chart-title">PREDIKSI VOLUME BARANG (TON) — PELABUHAN KALIMAS 2025–2027</p>
+      <canvas id="forecastChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- TABLE -->
+  <div class="table-section">
+    <p class="section-eyebrow">Data Prediksi</p>
+    <h2 class="section-heading">Tabel Hasil Prediksi 2025–2027</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Bulan</th>
+            <th>Indeks</th>
+            <th>Prediksi (Ton)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="year-header"><td colspan="3">— 2025 —</td></tr>
+          <tr><td>Januari</td><td>61</td><td class="td-highlight">21.596,63</td></tr>
+          <tr><td>Februari</td><td>62</td><td class="td-highlight">21.568,62</td></tr>
+          <tr><td>Maret</td><td>63</td><td class="td-highlight">21.540,61</td></tr>
+          <tr><td>April</td><td>64</td><td class="td-highlight">21.512,59</td></tr>
+          <tr><td>Mei</td><td>65</td><td class="td-highlight">21.484,58</td></tr>
+          <tr><td>Juni</td><td>66</td><td class="td-highlight">21.456,57</td></tr>
+          <tr><td>Juli</td><td>67</td><td class="td-highlight">21.428,55</td></tr>
+          <tr><td>Agustus</td><td>68</td><td class="td-highlight">21.400,54</td></tr>
+          <tr><td>September</td><td>69</td><td class="td-highlight">21.372,53</td></tr>
+          <tr><td>Oktober</td><td>70</td><td class="td-highlight">21.344,51</td></tr>
+          <tr><td>November</td><td>71</td><td class="td-highlight">21.316,50</td></tr>
+          <tr><td>Desember</td><td>72</td><td class="td-highlight">21.288,49</td></tr>
+          <tr class="year-header"><td colspan="3">— 2026 —</td></tr>
+          <tr><td>Januari</td><td>73</td><td class="td-highlight">21.260,47</td></tr>
+          <tr><td>Februari</td><td>74</td><td class="td-highlight">21.232,46</td></tr>
+          <tr><td>Maret</td><td>75</td><td class="td-highlight">21.204,45</td></tr>
+          <tr><td>April</td><td>76</td><td class="td-highlight">21.176,43</td></tr>
+          <tr><td>Mei</td><td>77</td><td class="td-highlight">21.148,42</td></tr>
+          <tr><td>Juni</td><td>78</td><td class="td-highlight">21.120,41</td></tr>
+          <tr><td>Juli</td><td>79</td><td class="td-highlight">21.092,39</td></tr>
+          <tr><td>Agustus</td><td>80</td><td class="td-highlight">21.064,38</td></tr>
+          <tr><td>September</td><td>81</td><td class="td-highlight">21.036,37</td></tr>
+          <tr><td>Oktober</td><td>82</td><td class="td-highlight">21.008,35</td></tr>
+          <tr><td>November</td><td>83</td><td class="td-highlight">20.980,34</td></tr>
+          <tr><td>Desember</td><td>84</td><td class="td-highlight">20.952,33</td></tr>
+          <tr class="year-header"><td colspan="3">— 2027 —</td></tr>
+          <tr><td>Januari</td><td>85</td><td class="td-highlight">20.924,31</td></tr>
+          <tr><td>Februari</td><td>86</td><td class="td-highlight">20.896,30</td></tr>
+          <tr><td>Maret</td><td>87</td><td class="td-highlight">20.868,29</td></tr>
+          <tr><td>April</td><td>88</td><td class="td-highlight">20.840,27</td></tr>
+          <tr><td>Mei</td><td>89</td><td class="td-highlight">20.812,26</td></tr>
+          <tr><td>Juni</td><td>90</td><td class="td-highlight">20.784,25</td></tr>
+          <tr><td>Juli</td><td>91</td><td class="td-highlight">20.756,23</td></tr>
+          <tr><td>Agustus</td><td>92</td><td class="td-highlight">20.728,22</td></tr>
+          <tr><td>September</td><td>93</td><td class="td-highlight">20.700,21</td></tr>
+          <tr><td>Oktober</td><td>94</td><td class="td-highlight">20.672,19</td></tr>
+          <tr><td>November</td><td>95</td><td class="td-highlight">20.644,18</td></tr>
+          <tr><td>Desember</td><td>96</td><td class="td-highlight">20.616,17</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- KESIMPULAN & SARAN -->
+  <div class="conclusion-section">
+    <p class="section-eyebrow">Penutup</p>
+    <h2 class="section-heading">Kesimpulan & Saran</h2>
+    <div class="conclusion-box">
+      <p>Hasil prediksi regresi linear menunjukkan volume barang di Pelabuhan Kalimas cenderung <strong>stabil dengan tren landai menurun</strong> sepanjang 2025–2027. Nilai berkisar antara 20.616 ton (Desember 2027) hingga 21.597 ton (Januari 2025), dengan penurunan rata-rata sekitar 28 ton per bulan.</p>
+      <p>Pola yang konsisten ini memberikan dasar yang dapat diandalkan untuk perencanaan operasional jangka menengah — mulai dari penjadwalan kapal, alokasi dermaga, hingga kebutuhan tenaga kerja bongkar muat di PT Pelindo Sub Regional Jawa.</p>
+    </div>
+    <div class="saran-box">
+      <h4>⚡ Rekomendasi Pengembangan</h4>
+      <p>Nilai MAPE 31,14% menunjukkan ruang perbaikan yang signifikan. Disarankan untuk mengeksplorasi metode <strong>Time Series (ARIMA)</strong> yang mampu menangkap pola musiman dan tren non-linear dalam data volume pelabuhan, berpotensi meningkatkan akurasi prediksi secara substansial.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER NAV -->
+<div class="project-footer">
+  <a href="index.html#projects" class="footer-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Kembali ke semua proyek
+  </a>
+  <span class="footer-note">Data bersumber dari PT Pelindo (Persero) Sub Regional Jawa · Bersifat rahasia</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+  const labels = [
+    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des',
+    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des',
+    'Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'
+  ];
+  const years = ['2025','','','','','','','','','','','','2026','','','','','','','','','','','','2027'];
+  const data = [
+    21596.63,21568.62,21540.61,21512.59,21484.58,21456.57,21428.55,21400.54,21372.53,21344.51,21316.50,21288.49,
+    21260.47,21232.46,21204.45,21176.43,21148.42,21120.41,21092.39,21064.38,21036.37,21008.35,20980.34,20952.33,
+    20924.31,20896.30,20868.29,20840.27,20812.26,20784.25,20756.23,20728.22,20700.21,20672.19,20644.18,20616.17
+  ];
+
+  const ctx = document.getElementById('forecastChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Prediksi Volume Barang (Ton)',
+        data: data,
+        borderColor: '#C87941',
+        backgroundColor: 'rgba(200,121,65,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointBackgroundColor: '#C87941',
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `${ctx.parsed.y.toLocaleString('id-ID', {minimumFractionDigits:2})} ton`,
+            title: (items) => {
+              const idx = items[0].dataIndex;
+              const yr = ['2025','2025','2025','2025','2025','2025','2025','2025','2025','2025','2025','2025',
+                          '2026','2026','2026','2026','2026','2026','2026','2026','2026','2026','2026','2026',
+                          '2027','2027','2027','2027','2027','2027','2027','2027','2027','2027','2027','2027'][idx];
+              return `${labels[idx]} ${yr}`;
+            }
+          },
+          backgroundColor: '#1A1714',
+          titleColor: '#C87941',
+          bodyColor: '#fff',
+          borderColor: '#C87941',
+          borderWidth: 1,
+          padding: 12
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(226,221,216,0.5)' },
+          ticks: {
+            font: { family: 'DM Mono', size: 10 },
+            color: '#4A4440',
+            maxRotation: 0
+          }
+        },
+        y: {
+          grid: { color: 'rgba(226,221,216,0.5)' },
+          ticks: {
+            font: { family: 'DM Mono', size: 10 },
+            color: '#4A4440',
+            callback: v => v.toLocaleString('id-ID')
+          },
+          min: 20000,
+          max: 22000
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
