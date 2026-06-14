@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project 3 — Data Storytelling: Online Food Business</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --bg2:       #161b27;
+      --bg3:       #1e2535;
+      --border:    #2a3347;
+      --teal:      #2dd4bf;
+      --teal-dim:  #1a9e8f;
+      --text:      #e2e8f0;
+      --muted:     #8892a4;
+      --white:     #ffffff;
+      --accent:    #f59e0b;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,17,23,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: var(--mono); color: var(--teal); font-size: 14px; text-decoration: none; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+    .nav-links a:hover { color: var(--teal); }
+    .back-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); text-decoration: none;
+      padding: 6px 14px; border-radius: 6px; font-size: 13px;
+      transition: border-color .2s, color .2s;
+    }
+    .back-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f1117 0%, #161b27 50%, #0f2027 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 32px 64px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 360px; height: 360px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,212,191,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .tag {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      padding: 4px 10px; border-radius: 4px; letter-spacing: .5px;
+    }
+    .tag-teal  { background: rgba(45,212,191,.12); color: var(--teal); border: 1px solid rgba(45,212,191,.25); }
+    .tag-amber { background: rgba(245,158,11,.10); color: var(--accent); border: 1px solid rgba(245,158,11,.22); }
+    .tag-green { background: rgba(34,197,94,.10);  color: var(--green);  border: 1px solid rgba(34,197,94,.22); }
+
+    .hero h1 { font-size: clamp(24px, 4vw, 38px); font-weight: 700; line-height: 1.25; margin-bottom: 14px; }
+    .hero h1 span { color: var(--teal); }
+    .hero-desc { color: var(--muted); max-width: 640px; font-size: 15px; margin-bottom: 32px; }
+
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 24px; }
+    .stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px 24px; }
+    .stat-val { font-size: 28px; font-weight: 700; color: var(--teal); font-family: var(--mono); line-height: 1; }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 56px 32px; }
+    .section-title {
+      font-size: 11px; font-family: var(--mono); color: var(--teal);
+      text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .section-heading { font-size: 22px; font-weight: 600; margin-bottom: 24px; }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--border);
+    }
+    .tl-item { position: relative; margin-bottom: 32px; }
+    .tl-dot {
+      position: absolute; left: -28px; top: 6px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--teal); border: 2px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(45,212,191,.2);
+    }
+    .tl-label { font-family: var(--mono); font-size: 11px; color: var(--teal); margin-bottom: 4px; }
+    .tl-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .tl-desc  { color: var(--muted); font-size: 14px; }
+
+    /* ── INSIGHT CARDS ── */
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .insight-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+      transition: border-color .25s, transform .25s;
+    }
+    .insight-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+    .insight-num { font-family: var(--mono); font-size: 11px; color: var(--teal); margin-bottom: 10px; }
+    .insight-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+    .insight-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .insight-card .decision {
+      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--accent);
+    }
+    .insight-card .decision strong { display: block; margin-bottom: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── UJI STATISTIK ── */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; }
+    .stat-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .stat-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .result-box {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 16px; font-family: var(--mono); font-size: 13px; margin: 12px 0;
+    }
+    .result-box span.val { color: var(--teal); }
+    .result-box span.sig { color: var(--green); font-size: 12px; }
+    .stat-card p { font-size: 13px; color: var(--muted); }
+    .pill {
+      display: inline-block; font-size: 11px; padding: 3px 9px;
+      border-radius: 99px; font-family: var(--mono); margin-bottom: 10px;
+    }
+    .pill-blue { background: rgba(99,179,237,.12); color: #63b3ed; border: 1px solid rgba(99,179,237,.2); }
+    .pill-purple { background: rgba(167,139,250,.12); color: #a78bfa; border: 1px solid rgba(167,139,250,.2); }
+    .pill-pink { background: rgba(244,114,182,.12); color: #f472b6; border: 1px solid rgba(244,114,182,.2); }
+
+    /* ── CODE BLOCK ── */
+    .code-section { margin-top: 8px; }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-bottom: none; border-radius: 8px 8px 0 0;
+      padding: 10px 16px;
+    }
+    .code-filename { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .code-lang { font-family: var(--mono); font-size: 11px; color: var(--teal); }
+    .code-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+    .code-tab {
+      padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--bg3); color: var(--muted);
+      font-family: var(--mono); transition: all .2s;
+    }
+    .code-tab.active { background: rgba(45,212,191,.12); color: var(--teal); border-color: rgba(45,212,191,.3); }
+    pre {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 0 0 8px 8px; padding: 20px;
+      overflow-x: auto; font-family: var(--mono); font-size: 12px;
+      line-height: 1.7; color: #cdd6f4;
+      max-height: 420px; overflow-y: auto;
+    }
+    .kw  { color: #cba6f7; }
+    .fn  { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm  { color: #585b70; font-style: italic; }
+    .num { color: #fab387; }
+
+    /* ── KETERBATASAN ── */
+    .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width:600px) { .limit-grid { grid-template-columns: 1fr; } }
+    .limit-box {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+    }
+    .limit-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .limit-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .limit-box ul li { font-size: 13px; color: var(--muted); padding-left: 16px; position: relative; }
+    .limit-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--teal); }
+
+    /* ── OUTCOME ── */
+    .outcome-row { display: flex; flex-wrap: wrap; gap: 16px; }
+    .outcome-card {
+      flex: 1; min-width: 180px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+      text-align: center;
+    }
+    .outcome-val { font-size: 30px; font-weight: 700; color: var(--teal); font-family: var(--mono); }
+    .outcome-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px; text-align: center;
+      color: var(--muted); font-size: 13px;
+    }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    /* ── CODE PANEL TOGGLE ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    @media (max-width:640px) {
+      nav { padding: 12px 16px; }
+      .hero { padding: 48px 16px 40px; }
+      .container { padding: 40px 16px; }
+      .hero-stats { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">~/portfolio</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#insights">Insights</a></li>
+    <li><a href="#statistik">Statistik</a></li>
+    <li><a href="#kode">Kode</a></li>
+  </ul>
+  <a class="back-btn" href="index.html">← Kembali</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tags">
+      <span class="tag tag-teal">Python</span>
+      <span class="tag tag-teal">EDA</span>
+      <span class="tag tag-amber">Data Storytelling</span>
+      <span class="tag tag-amber">Visualisasi</span>
+      <span class="tag tag-green">Statistik</span>
+    </div>
+    <h1>Data Storytelling:<br/><span>Online Food Business</span></h1>
+    <p class="hero-desc">
+      Menganalisis dataset 388 pelanggan platform makanan online untuk mengungkap
+      3 insight utama tentang segmen usia, pengaruh pendapatan terhadap kepuasan,
+      dan hubungan pendidikan–penghasilan. Disajikan lengkap dari data cleaning
+      hingga uji statistik dan storytelling visual.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">388</div>
+        <div class="stat-label">Baris Data</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">6</div>
+        <div class="stat-label">Kolom / Variabel</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">3</div>
+        <div class="stat-label">Key Insights</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">+20–30%</div>
+        <div class="stat-label">Potensi Revenue</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW / TIMELINE -->
+<section class="container" id="overview">
+  <p class="section-title">Alur Proyek</p>
+  <h2 class="section-heading">Dari Data Mentah ke Keputusan Bisnis</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 2</div>
+      <div class="tl-title">Pencarian & Perolehan Data</div>
+      <div class="tl-desc">Menemukan dataset <em>Online Food Business</em> (388 baris, 6 kolom: Age, Monthly Income, Educational Qualifications, Latitude, Longitude, Feedback) yang relevan untuk analisis perilaku pelanggan platform makanan online.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 3</div>
+      <div class="tl-title">Data Cleaning</div>
+      <div class="tl-desc">Pengecekan missing value, duplikat, outlier dengan metode IQR, inkonsistensi teks, dan konversi tipe data. Kolom Feedback dikonversi ke biner (Positive=1, Negative=0). Dataset dinyatakan bersih dan siap analisis.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 4</div>
+      <div class="tl-title">Exploratory Data Analysis (EDA)</div>
+      <div class="tl-desc">Statistik deskriptif, visualisasi distribusi tiap variabel, dan analisis hubungan antar variabel. Membandingkan pendekatan grafik yang tepat vs kurang tepat untuk setiap insight.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 5</div>
+      <div class="tl-title">Data Storytelling</div>
+      <div class="tl-desc">Membuat ulang 3 grafik utama dengan judul yang langsung berisi insight, warna strategis, dan layout bersih agar dapat dipahami oleh siapapun tanpa latar belakang teknis.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 6</div>
+      <div class="tl-title">Uji Statistik</div>
+      <div class="tl-desc">Menjalankan 3 uji statistik: Welch's t-Test (usia vs feedback), Korelasi Pearson (usia vs penghasilan), dan Regresi Sederhana (penghasilan → usia). Membuktikan insight secara matematis.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Tugas 10</div>
+      <div class="tl-title">Presentasi & Infografis</div>
+      <div class="tl-desc">Menyajikan 3 insight dalam slide deck lengkap (latar belakang → rekomendasi → timeline → budget → risiko) dan 1 infografis satu halaman dengan potensi kenaikan revenue 20–30% dalam 6 bulan.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+
+<!-- INSIGHTS -->
+<section class="container" id="insights">
+  <p class="section-title">Temuan Utama</p>
+  <h2 class="section-heading">3 Insight dari Data</h2>
+  <div class="insight-grid">
+
+    <div class="insight-card">
+      <div class="insight-num">INSIGHT 01</div>
+      <h3>Mayoritas Pelanggan Berusia 23–26 Tahun</h3>
+      <p>70%+ pelanggan adalah kelompok usia dewasa muda dengan puncak di usia 23–24 tahun. Kelompok usia &lt;20 dan &gt;30 sangat jarang, menunjukkan risiko churn tinggi jika promosi tidak cocok.</p>
+      <div class="decision">
+        <strong>Keputusan Bisnis</strong>
+        Luncurkan kampanye digital targeted di Instagram & TikTok. Budget iklan Rp 50 juta, target engagement +30%, retensi +20%.
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-num">INSIGHT 02</div>
+      <h3>Penghasilan Tidak Memengaruhi Kepuasan Pelanggan</h3>
+      <p>Distribusi feedback positif dan negatif merata di semua kategori income. Kepuasan lebih dipengaruhi kualitas layanan pengiriman dan UI aplikasi, bukan harga atau diskon.</p>
+      <div class="decision">
+        <strong>Keputusan Bisnis</strong>
+        Investasi Rp 100 juta ke peningkatan kualitas pengiriman dan UI. Target NPS +15 poin, churn &minus;25%, save revenue Rp 2 M/tahun.
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-num">INSIGHT 03</div>
+      <h3>Pendidikan Tinggi Berbanding Lurus dengan Penghasilan</h3>
+      <p>Post Graduate rata-rata berpenghasilan &gt;70k, sementara School/Uneducated &lt;40k. Promo generik berisiko tidak tepat sasaran dan melewatkan segmen premium.</p>
+      <div class="decision">
+        <strong>Keputusan Bisnis</strong>
+        Segmentasi promo: paket premium untuk Post Graduate, diskon untuk School/Uneducated. Target konversi +25%, revenue +10%.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+
+<!-- UJI STATISTIK -->
+<section class="container" id="statistik">
+  <p class="section-title">Bukti Matematis</p>
+  <h2 class="section-heading">Hasil Uji Statistik</h2>
+  <div class="stat-cards">
+
+    <div class="stat-card">
+      <span class="pill pill-blue">Welch's t-Test</span>
+      <h3>Usia vs Feedback</h3>
+      <p>Apakah rata-rata usia pelanggan berbeda antara yang feedback positif dan negatif?</p>
+      <div class="result-box">
+        T-statistic = <span class="val">-3.608</span><br/>
+        p-value     = <span class="val">0.0005</span><br/>
+        <span class="sig">✓ Signifikan (p &lt; 0.05)</span>
+      </div>
+      <p>Ada perbedaan usia yang signifikan antar kelompok feedback. Kelompok umur tertentu cenderung lebih puas atau lebih kritis terhadap layanan.</p>
+    </div>
+
+    <div class="stat-card">
+      <span class="pill pill-purple">Korelasi Pearson</span>
+      <h3>Usia vs Penghasilan</h3>
+      <p>Apakah semakin tua usia, semakin tinggi penghasilan pelanggan?</p>
+      <div class="result-box">
+        r       = <span class="val">0.5622</span><br/>
+        p-value = <span class="val">1.03e-33</span><br/>
+        <span class="sig">✓ Korelasi sedang-kuat</span>
+      </div>
+      <p>Ada hubungan sedang-kuat yang sangat signifikan. Semakin tua usia pelanggan, cenderung semakin tinggi penghasilan bulanannya.</p>
+    </div>
+
+    <div class="stat-card">
+      <span class="pill pill-pink">Regresi Sederhana</span>
+      <h3>Penghasilan → Usia</h3>
+      <p>Seberapa besar pengaruh penghasilan terhadap usia pelanggan?</p>
+      <div class="result-box">
+        R²          = <span class="val">0.316</span><br/>
+        Koefisien   = <span class="val">positif</span><br/>
+        <span class="sig">✓ 31.6% variasi usia dijelaskan</span>
+      </div>
+      <p>Penghasilan menjelaskan 31.6% variasi usia pelanggan. Setiap kenaikan satu tingkat penghasilan, usia rata-rata naik beberapa tahun.</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+
+<!-- KODE -->
+<section class="container" id="kode">
+  <p class="section-title">Source Code</p>
+  <h2 class="section-heading">Implementasi Python</h2>
+
+  <div class="code-tabs">
+    <button class="code-tab active" onclick="switchTab('cleaning')">data_cleaning.py</button>
+    <button class="code-tab" onclick="switchTab('eda')">eda_visualisasi.py</button>
+  </div>
+
+  <!-- CLEANING -->
+  <div class="code-section panel active" id="panel-cleaning">
+    <div class="code-header">
+      <span class="code-filename">data_cleaning.py</span>
+      <span class="code-lang">Python</span>
+    </div>
+    <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> tkinter <span class="kw">as</span> tk
+<span class="kw">from</span> tkinter <span class="kw">import</span> filedialog
+
+<span class="cm"># Upload file CSV lewat dialog</span>
+root = tk.Tk()
+root.withdraw()
+file_path = filedialog.<span class="fn">askopenfilename</span>(
+    title=<span class="str">"Pilih file CSV dataset Online Food"</span>,
+    filetypes=[(<span class="str">"CSV files"</span>, <span class="str">"*.csv"</span>)]
+)
+df = pd.<span class="fn">read_csv</span>(file_path)
+
+<span class="cm"># Step 1: Profiling awal</span>
+<span class="fn">print</span>(df.<span class="fn">info</span>())
+<span class="fn">print</span>(df.<span class="fn">describe</span>())
+
+<span class="cm"># Step 2: Missing value</span>
+<span class="fn">print</span>(df.<span class="fn">isnull</span>().<span class="fn">sum</span>())
+
+<span class="cm"># Step 3: Duplikat</span>
+<span class="fn">print</span>(df.<span class="fn">duplicated</span>().<span class="fn">sum</span>())
+
+<span class="cm"># Step 4: Outlier (IQR method)</span>
+<span class="kw">for</span> col <span class="kw">in</span> df.<span class="fn">select_dtypes</span>(include=[np.number]).columns:
+    Q1 = df[col].<span class="fn">quantile</span>(<span class="num">0.25</span>)
+    Q3 = df[col].<span class="fn">quantile</span>(<span class="num">0.75</span>)
+    IQR = Q3 - Q1
+    outlier = df[(df[col] &lt; Q1 - <span class="num">1.5</span>*IQR) | (df[col] &gt; Q3 + <span class="num">1.5</span>*IQR)]
+    <span class="fn">print</span>(<span class="str">f"Outlier '{col}': {len(outlier)}"</span>)
+
+<span class="cm"># Step 5: Inkonsistensi teks</span>
+<span class="kw">for</span> col <span class="kw">in</span> df.<span class="fn">select_dtypes</span>(include=[<span class="str">'object'</span>]).columns:
+    <span class="fn">print</span>(df[col].<span class="fn">value_counts</span>())
+
+<span class="cm"># Step 6: Konversi tipe data</span>
+df[<span class="str">'Feedback'</span>] = df[<span class="str">'Feedback'</span>].<span class="fn">replace</span>({<span class="str">'Positive'</span>: <span class="num">1</span>, <span class="str">'Negative'</span>: <span class="num">0</span>})
+
+<span class="cm"># Step 7: Simpan data bersih</span>
+df.<span class="fn">to_csv</span>(<span class="str">'online_food_clean.csv'</span>, index=<span class="kw">False</span>)</pre>
+  </div>
+
+  <!-- EDA -->
+  <div class="code-section panel" id="panel-eda">
+    <div class="code-header">
+      <span class="code-filename">eda_visualisasi.py</span>
+      <span class="code-lang">Python</span>
+    </div>
+    <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+
+<span class="cm"># Load dataset bersih</span>
+df = pd.<span class="fn">read_csv</span>(<span class="str">'online_food_clean.csv'</span>)
+
+<span class="cm"># --- Insight 1: Distribusi Usia ---</span>
+age_counts = df[<span class="str">'Age'</span>].<span class="fn">value_counts</span>().<span class="fn">sort_index</span>()
+colors = [<span class="str">'#ff7f0e'</span> <span class="kw">if</span> <span class="num">23</span> &lt;= x &lt;= <span class="num">26</span> <span class="kw">else</span> <span class="str">'#1f77b4'</span>
+          <span class="kw">for</span> x <span class="kw">in</span> age_counts.index]
+
+plt.<span class="fn">figure</span>(figsize=(<span class="num">10</span>, <span class="num">6</span>))
+plt.<span class="fn">barh</span>(age_counts.index, age_counts.values, color=colors)
+plt.<span class="fn">title</span>(<span class="str">'Mayoritas Pengguna Berusia 23–26 Tahun'</span>)
+plt.<span class="fn">gca</span>().<span class="fn">invert_yaxis</span>()
+plt.<span class="fn">show</span>()
+
+<span class="cm"># --- Insight 2: Penghasilan vs Feedback ---</span>
+income_map = {<span class="str">'No Income'</span>: <span class="num">0</span>, <span class="str">'Below Rs.10000'</span>: <span class="num">5000</span>,
+              <span class="str">'10001 to 25000'</span>: <span class="num">17500</span>, <span class="str">'25001 to 50000'</span>: <span class="num">37500</span>,
+              <span class="str">'More than 50000'</span>: <span class="num">75000</span>}
+df[<span class="str">'Income_Num'</span>] = df[<span class="str">'Monthly Income'</span>].<span class="fn">map</span>(income_map)
+
+sns.<span class="fn">boxplot</span>(data=df, x=<span class="str">'Feedback'</span>, y=<span class="str">'Income_Num'</span>, palette=<span class="str">'muted'</span>)
+plt.<span class="fn">title</span>(<span class="str">'Kepuasan Tidak Dipengaruhi Penghasilan'</span>)
+plt.<span class="fn">show</span>()
+
+<span class="cm"># --- Insight 3: Pendidikan vs Penghasilan ---</span>
+edu_order = (df.<span class="fn">groupby</span>(<span class="str">'Educational Qualifications'</span>)[<span class="str">'Income_Num'</span>]
+               .<span class="fn">median</span>().<span class="fn">sort_values</span>().index.<span class="fn">tolist</span>())
+sns.<span class="fn">boxplot</span>(data=df, x=<span class="str">'Educational Qualifications'</span>,
+            y=<span class="str">'Income_Num'</span>, order=edu_order, palette=<span class="str">'pastel'</span>)
+plt.<span class="fn">title</span>(<span class="str">'Pendidikan Memengaruhi Variasi Penghasilan'</span>)
+plt.<span class="fn">xticks</span>(rotation=<span class="num">45</span>)
+plt.<span class="fn">show</span>()</pre>
+  </div>
+</section>
+
+<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+
+<!-- KETERBATASAN -->
+<section class="container">
+  <p class="section-title">Refleksi Ilmiah</p>
+  <h2 class="section-heading">Keterbatasan & Rekomendasi Data</h2>
+  <div class="limit-grid">
+    <div class="limit-box">
+      <h4 style="color:var(--red)">⚠ Keterbatasan Data Saat Ini</h4>
+      <ul>
+        <li>Tidak ada data frekuensi pemesanan per pelanggan</li>
+        <li>Tidak ada rating per transaksi (hanya Positive/Negative)</li>
+        <li>Tidak ada data waktu atau lama pengiriman</li>
+        <li>Tidak ada jenis/kategori makanan yang dipesan</li>
+        <li>Kolom income masih berupa kategori, bukan angka pasti</li>
+      </ul>
+    </div>
+    <div class="limit-box">
+      <h4 style="color:var(--green)">✓ Saran Variabel Tambahan</h4>
+      <ul>
+        <li>Frekuensi order per bulan (loyalitas pelanggan)</li>
+        <li>Rating aplikasi skala 1–5 per transaksi</li>
+        <li>Waktu pengiriman dalam menit</li>
+        <li>Jarak pengiriman dalam kilometer</li>
+        <li>Jenis makanan yang dipesan (kategori)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+
+<!-- OUTCOME -->
+<section class="container">
+  <p class="section-title">Dampak Proyeksi</p>
+  <h2 class="section-heading">Expected Outcome Bisnis</h2>
+  <div class="outcome-row">
+    <div class="outcome-card">
+      <div class="outcome-val">+30%</div>
+      <div class="outcome-label">Engagement dari kampanye digital usia 23–26 tahun</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-val">+15</div>
+      <div class="outcome-label">Poin NPS dari peningkatan kualitas layanan</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-val">+25%</div>
+      <div class="outcome-label">Konversi segmen premium (Post Graduate)</div>
+    </div>
+    <div class="outcome-card">
+      <div class="outcome-val">20–30%</div>
+      <div class="outcome-label">Potensi kenaikan total revenue dalam 6 bulan</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Kelompok 6 Beginner · Devira Auriga · Egasilva Najwa · Evanda Nur Haliza · Fauziyah Rahman · Inayatul Fadilah · Sylvia Nur Aini</p>
+  <p style="margin-top:8px;">Dataset: Online Food Business · November 2025 · <a href="index.html">← Kembali ke Portfolio</a></p>
+</footer>
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
