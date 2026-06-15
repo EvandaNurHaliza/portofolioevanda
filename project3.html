@@ -4,32 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project 3 — Data Storytelling: Online Food Business</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0f1117;
-      --bg2:       #161b27;
-      --bg3:       #1e2535;
-      --border:    #2a3347;
-      --teal:      #2dd4bf;
-      --teal-dim:  #1a9e8f;
-      --text:      #e2e8f0;
-      --muted:     #8892a4;
-      --white:     #ffffff;
-      --accent:    #f59e0b;
-      --green:     #22c55e;
-      --red:       #ef4444;
-      --mono:      'JetBrains Mono', monospace;
-      --sans:      'Inter', sans-serif;
+      --cream: #f2f2fa;
+      --ink: #1A1714;
+      --ink-soft: #4A4440;
+      --teal: #1a6b5e;
+      --teal-light: #E8F5F2;
+      --teal-mid: #C2E0DA;
+      --amber: #b8860b;
+      --amber-light: #fff8e1;
+      --rule: #E2DDD8;
+      --white: #ffffff;
+      --green: #2d7a4f;
+      --red: #b83232;
+      --mono: 'DM Mono', monospace;
+      --serif: 'DM Serif Display', serif;
+      --sans: 'DM Sans', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--cream);
+      color: var(--ink);
       font-family: var(--sans);
       line-height: 1.6;
       font-size: 15px;
@@ -37,193 +38,338 @@
 
     /* ── NAV ── */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(15,17,23,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 32px;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 5vw;
+      background: rgba(242,242,250,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
     }
-    .nav-logo { font-family: var(--mono); color: var(--teal); font-size: 14px; text-decoration: none; }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
     .nav-links a:hover { color: var(--teal); }
     .back-btn {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--bg3); border: 1px solid var(--border);
-      color: var(--text); text-decoration: none;
-      padding: 6px 14px; border-radius: 6px; font-size: 13px;
-      transition: border-color .2s, color .2s;
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
     }
     .back-btn:hover { border-color: var(--teal); color: var(--teal); }
 
     /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #0f1117 0%, #161b27 50%, #0f2027 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 72px 32px 64px;
-      position: relative; overflow: hidden;
+      padding: 9rem 5vw 5rem;
+      border-bottom: 1px solid var(--rule);
+      max-width: 1100px;
+      margin: 0 auto;
     }
-    .hero::before {
-      content: '';
-      position: absolute; top: -60px; right: -60px;
-      width: 360px; height: 360px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(45,212,191,.08) 0%, transparent 70%);
-      pointer-events: none;
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
     }
-    .hero-inner { max-width: 860px; margin: 0 auto; }
-    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--teal); }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--ink-soft);
+      max-width: 640px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Tags */
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
     .tag {
-      font-family: var(--mono); font-size: 11px; font-weight: 500;
-      padding: 4px 10px; border-radius: 4px; letter-spacing: .5px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
     }
-    .tag-teal  { background: rgba(45,212,191,.12); color: var(--teal); border: 1px solid rgba(45,212,191,.25); }
-    .tag-amber { background: rgba(245,158,11,.10); color: var(--accent); border: 1px solid rgba(245,158,11,.22); }
-    .tag-green { background: rgba(34,197,94,.10);  color: var(--green);  border: 1px solid rgba(34,197,94,.22); }
+    .tag-teal  { background: var(--teal-light); color: var(--teal); border: 1px solid var(--teal-mid); }
+    .tag-amber { background: var(--amber-light); color: var(--amber); border: 1px solid #e0c068; }
+    .tag-green { background: #e8f5ee; color: var(--green); border: 1px solid #b2d9c2; }
 
-    .hero h1 { font-size: clamp(24px, 4vw, 38px); font-weight: 700; line-height: 1.25; margin-bottom: 14px; }
-    .hero h1 span { color: var(--teal); }
-    .hero-desc { color: var(--muted); max-width: 640px; font-size: 15px; margin-bottom: 32px; }
-
-    .hero-stats { display: flex; flex-wrap: wrap; gap: 24px; }
-    .stat { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px 24px; }
-    .stat-val { font-size: 28px; font-weight: 700; color: var(--teal); font-family: var(--mono); line-height: 1; }
-    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 900px; margin: 0 auto; padding: 56px 32px; }
-    .section-title {
-      font-size: 11px; font-family: var(--mono); color: var(--teal);
-      text-transform: uppercase; letter-spacing: 2px;
-      margin-bottom: 8px;
+    /* Hero stats */
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem; }
+    .h-stat { }
+    .h-stat-val {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--teal);
+      line-height: 1;
     }
-    .section-heading { font-size: 22px; font-weight: 600; margin-bottom: 24px; }
-    hr.divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+    .h-stat-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-top: 2px;
+    }
+    .stat-divider { width: 1px; background: var(--rule); align-self: stretch; margin: 4px 0; }
+
+    /* ── SECTIONS ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 5rem 5vw; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--rule);
+      max-width: 960px;
+      margin: 0 auto;
+    }
 
     /* ── TIMELINE ── */
-    .timeline { position: relative; padding-left: 24px; }
+    .timeline { position: relative; padding-left: 1.5rem; }
     .timeline::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 1px; background: var(--border);
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: var(--rule);
     }
-    .tl-item { position: relative; margin-bottom: 32px; }
+    .tl-item { position: relative; margin-bottom: 2rem; }
     .tl-dot {
-      position: absolute; left: -28px; top: 6px;
+      position: absolute; left: -1.85rem; top: 6px;
       width: 10px; height: 10px; border-radius: 50%;
-      background: var(--teal); border: 2px solid var(--bg);
-      box-shadow: 0 0 0 3px rgba(45,212,191,.2);
+      background: var(--teal);
+      border: 2px solid var(--cream);
+      box-shadow: 0 0 0 3px var(--teal-mid);
     }
-    .tl-label { font-family: var(--mono); font-size: 11px; color: var(--teal); margin-bottom: 4px; }
-    .tl-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-    .tl-desc  { color: var(--muted); font-size: 14px; }
+    .tl-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 4px;
+    }
+    .tl-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+    .tl-desc  { font-size: 13px; color: var(--ink-soft); }
 
     /* ── INSIGHT CARDS ── */
-    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
     .insight-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px;
-      transition: border-color .25s, transform .25s;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .insight-card:hover { border-color: var(--teal); transform: translateY(-3px); }
-    .insight-num { font-family: var(--mono); font-size: 11px; color: var(--teal); margin-bottom: 10px; }
-    .insight-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
-    .insight-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .insight-card:hover {
+      border-color: var(--teal-mid);
+      box-shadow: 0 4px 16px rgba(26,107,94,0.08);
+    }
+    .insight-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.75rem;
+    }
+    .insight-card h3 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.6rem; }
+    .insight-card p  { font-size: 13px; color: var(--ink-soft); line-height: 1.65; }
     .insight-card .decision {
-      margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
-      font-size: 12px; color: var(--accent);
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+      font-size: 12px;
+      color: var(--amber);
     }
-    .insight-card .decision strong { display: block; margin-bottom: 3px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .insight-card .decision strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
 
-    /* ── UJI STATISTIK ── */
-    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; }
+    /* ── STAT CARDS (UJI STATISTIK) ── */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
     .stat-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 24px;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.5rem;
     }
-    .stat-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+    .stat-card h3 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.6rem; }
     .result-box {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 12px 16px; font-family: var(--mono); font-size: 13px; margin: 12px 0;
+      background: var(--teal-light);
+      border: 1px solid var(--teal-mid);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      font-family: var(--mono);
+      font-size: 12px;
+      margin: 0.75rem 0;
+      line-height: 1.8;
+      color: var(--ink-soft);
     }
-    .result-box span.val { color: var(--teal); }
-    .result-box span.sig { color: var(--green); font-size: 12px; }
-    .stat-card p { font-size: 13px; color: var(--muted); }
+    .result-box span.val { color: var(--teal); font-weight: 500; }
+    .result-box span.sig { color: var(--green); font-size: 11px; }
+    .stat-card > p { font-size: 13px; color: var(--ink-soft); }
     .pill {
-      display: inline-block; font-size: 11px; padding: 3px 9px;
-      border-radius: 99px; font-family: var(--mono); margin-bottom: 10px;
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 0.75rem;
     }
-    .pill-blue { background: rgba(99,179,237,.12); color: #63b3ed; border: 1px solid rgba(99,179,237,.2); }
-    .pill-purple { background: rgba(167,139,250,.12); color: #a78bfa; border: 1px solid rgba(167,139,250,.2); }
-    .pill-pink { background: rgba(244,114,182,.12); color: #f472b6; border: 1px solid rgba(244,114,182,.2); }
+    .pill-blue   { background: var(--teal-light); color: var(--teal); border: 1px solid var(--teal-mid); }
+    .pill-purple { background: var(--amber-light); color: var(--amber); border: 1px solid #e0c068; }
+    .pill-pink   { background: #f5ece8; color: #8b4513; border: 1px solid #d4a88a; }
 
     /* ── CODE BLOCK ── */
+    .code-tabs { display: flex; gap: 4px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .code-tab {
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px solid var(--rule);
+      background: var(--white);
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      transition: all 0.2s;
+    }
+    .code-tab.active {
+      background: var(--teal-light);
+      color: var(--teal);
+      border-color: var(--teal-mid);
+    }
+    .code-tab:hover:not(.active) { border-color: var(--teal-mid); color: var(--teal); }
     .code-section { margin-top: 8px; }
     .code-header {
       display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg3); border: 1px solid var(--border);
-      border-bottom: none; border-radius: 8px 8px 0 0;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
       padding: 10px 16px;
     }
-    .code-filename { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .code-filename { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
     .code-lang { font-family: var(--mono); font-size: 11px; color: var(--teal); }
-    .code-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
-    .code-tab {
-      padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer;
-      border: 1px solid var(--border); background: var(--bg3); color: var(--muted);
-      font-family: var(--mono); transition: all .2s;
-    }
-    .code-tab.active { background: rgba(45,212,191,.12); color: var(--teal); border-color: rgba(45,212,191,.3); }
     pre {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 0 0 8px 8px; padding: 20px;
-      overflow-x: auto; font-family: var(--mono); font-size: 12px;
-      line-height: 1.7; color: #cdd6f4;
-      max-height: 420px; overflow-y: auto;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 0 0 6px 6px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--ink);
+      max-height: 420px;
+      overflow-y: auto;
     }
-    .kw  { color: #cba6f7; }
-    .fn  { color: #89b4fa; }
-    .str { color: #a6e3a1; }
-    .cm  { color: #585b70; font-style: italic; }
-    .num { color: #fab387; }
+    .kw  { color: var(--teal); font-weight: 500; }
+    .fn  { color: #1a5a8e; }
+    .str { color: #3a7a3a; }
+    .cm  { color: #999; font-style: italic; }
+    .num { color: var(--amber); }
 
     /* ── KETERBATASAN ── */
-    .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width:600px) { .limit-grid { grid-template-columns: 1fr; } }
+    .limit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 600px) { .limit-grid { grid-template-columns: 1fr; } }
     .limit-box {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.5rem;
     }
-    .limit-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .limit-box h4 { font-size: 13px; font-weight: 600; margin-bottom: 0.75rem; }
+    .limit-box h4.danger { color: var(--red); }
+    .limit-box h4.safe   { color: var(--green); }
     .limit-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .limit-box ul li { font-size: 13px; color: var(--muted); padding-left: 16px; position: relative; }
+    .limit-box ul li { font-size: 13px; color: var(--ink-soft); padding-left: 1.25rem; position: relative; }
     .limit-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--teal); }
 
     /* ── OUTCOME ── */
-    .outcome-row { display: flex; flex-wrap: wrap; gap: 16px; }
+    .outcome-row { display: flex; flex-wrap: wrap; gap: 1rem; }
     .outcome-card {
-      flex: 1; min-width: 180px;
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+      flex: 1; min-width: 160px;
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 1.25rem;
       text-align: center;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .outcome-val { font-size: 30px; font-weight: 700; color: var(--teal); font-family: var(--mono); }
-    .outcome-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .outcome-card:hover {
+      border-color: var(--teal-mid);
+      box-shadow: 0 4px 16px rgba(26,107,94,0.08);
+    }
+    .outcome-val {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .outcome-label { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
 
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 32px; text-align: center;
-      color: var(--muted); font-size: 13px;
+      border-top: 1px solid var(--rule);
+      padding: 2rem 5vw;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 13px;
     }
     footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
 
     /* ── CODE PANEL TOGGLE ── */
     .panel { display: none; }
     .panel.active { display: block; }
 
-    @media (max-width:640px) {
-      nav { padding: 12px 16px; }
-      .hero { padding: 48px 16px 40px; }
-      .container { padding: 40px 16px; }
-      .hero-stats { gap: 12px; }
+    @media (max-width: 640px) {
+      nav { padding: 1rem 4vw; }
+      .nav-links { display: none; }
+      .hero { padding: 7rem 4vw 3rem; }
+      .container { padding: 3rem 4vw; }
     }
   </style>
 </head>
@@ -231,7 +377,7 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="index.html">~/portfolio</a>
+  <a class="nav-logo" href="index.html">~/evanda</a>
   <ul class="nav-links">
     <li><a href="#overview">Overview</a></li>
     <li><a href="#insights">Insights</a></li>
@@ -242,46 +388,50 @@
 </nav>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-tags">
-      <span class="tag tag-teal">Python</span>
-      <span class="tag tag-teal">EDA</span>
-      <span class="tag tag-amber">Data Storytelling</span>
-      <span class="tag tag-amber">Visualisasi</span>
-      <span class="tag tag-green">Statistik</span>
+<div class="hero">
+  <p class="hero-eyebrow">Project 3 · Data Storytelling · EDA · Visualisasi</p>
+  <h1>Data Storytelling:<br/><em>Online Food Business</em></h1>
+  <p class="hero-desc">
+    Menganalisis dataset 388 pelanggan platform makanan online untuk mengungkap
+    3 insight utama tentang segmen usia, pengaruh pendapatan terhadap kepuasan,
+    dan hubungan pendidikan–penghasilan. Disajikan lengkap dari data cleaning
+    hingga uji statistik dan storytelling visual.
+  </p>
+  <div class="hero-tags">
+    <span class="tag tag-teal">Python</span>
+    <span class="tag tag-teal">EDA</span>
+    <span class="tag tag-amber">Data Storytelling</span>
+    <span class="tag tag-amber">Visualisasi</span>
+    <span class="tag tag-green">Statistik</span>
+  </div>
+  <div class="hero-stats">
+    <div class="h-stat">
+      <div class="h-stat-val">388</div>
+      <div class="h-stat-label">Baris Data</div>
     </div>
-    <h1>Data Storytelling:<br/><span>Online Food Business</span></h1>
-    <p class="hero-desc">
-      Menganalisis dataset 388 pelanggan platform makanan online untuk mengungkap
-      3 insight utama tentang segmen usia, pengaruh pendapatan terhadap kepuasan,
-      dan hubungan pendidikan–penghasilan. Disajikan lengkap dari data cleaning
-      hingga uji statistik dan storytelling visual.
-    </p>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-val">388</div>
-        <div class="stat-label">Baris Data</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">6</div>
-        <div class="stat-label">Kolom / Variabel</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">3</div>
-        <div class="stat-label">Key Insights</div>
-      </div>
-      <div class="stat">
-        <div class="stat-val">+20–30%</div>
-        <div class="stat-label">Potensi Revenue</div>
-      </div>
+    <div class="stat-divider"></div>
+    <div class="h-stat">
+      <div class="h-stat-val">6</div>
+      <div class="h-stat-label">Kolom / Variabel</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="h-stat">
+      <div class="h-stat-val">3</div>
+      <div class="h-stat-label">Key Insights</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="h-stat">
+      <div class="h-stat-val">+20–30%</div>
+      <div class="h-stat-label">Potensi Revenue</div>
     </div>
   </div>
-</section>
+</div>
+
+<hr class="divider" />
 
 <!-- OVERVIEW / TIMELINE -->
 <section class="container" id="overview">
-  <p class="section-title">Alur Proyek</p>
+  <p class="section-label">Alur Proyek</p>
   <h2 class="section-heading">Dari Data Mentah ke Keputusan Bisnis</h2>
 
   <div class="timeline">
@@ -324,16 +474,16 @@
   </div>
 </section>
 
-<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+<hr class="divider" />
 
 <!-- INSIGHTS -->
 <section class="container" id="insights">
-  <p class="section-title">Temuan Utama</p>
+  <p class="section-label">Temuan Utama</p>
   <h2 class="section-heading">3 Insight dari Data</h2>
   <div class="insight-grid">
 
     <div class="insight-card">
-      <div class="insight-num">INSIGHT 01</div>
+      <div class="insight-num">Insight 01</div>
       <h3>Mayoritas Pelanggan Berusia 23–26 Tahun</h3>
       <p>70%+ pelanggan adalah kelompok usia dewasa muda dengan puncak di usia 23–24 tahun. Kelompok usia &lt;20 dan &gt;30 sangat jarang, menunjukkan risiko churn tinggi jika promosi tidak cocok.</p>
       <div class="decision">
@@ -343,7 +493,7 @@
     </div>
 
     <div class="insight-card">
-      <div class="insight-num">INSIGHT 02</div>
+      <div class="insight-num">Insight 02</div>
       <h3>Penghasilan Tidak Memengaruhi Kepuasan Pelanggan</h3>
       <p>Distribusi feedback positif dan negatif merata di semua kategori income. Kepuasan lebih dipengaruhi kualitas layanan pengiriman dan UI aplikasi, bukan harga atau diskon.</p>
       <div class="decision">
@@ -353,7 +503,7 @@
     </div>
 
     <div class="insight-card">
-      <div class="insight-num">INSIGHT 03</div>
+      <div class="insight-num">Insight 03</div>
       <h3>Pendidikan Tinggi Berbanding Lurus dengan Penghasilan</h3>
       <p>Post Graduate rata-rata berpenghasilan &gt;70k, sementara School/Uneducated &lt;40k. Promo generik berisiko tidak tepat sasaran dan melewatkan segmen premium.</p>
       <div class="decision">
@@ -365,11 +515,11 @@
   </div>
 </section>
 
-<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+<hr class="divider" />
 
 <!-- UJI STATISTIK -->
 <section class="container" id="statistik">
-  <p class="section-title">Bukti Matematis</p>
+  <p class="section-label">Bukti Matematis</p>
   <h2 class="section-heading">Hasil Uji Statistik</h2>
   <div class="stat-cards">
 
@@ -412,16 +562,16 @@
   </div>
 </section>
 
-<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+<hr class="divider" />
 
 <!-- KODE -->
 <section class="container" id="kode">
-  <p class="section-title">Source Code</p>
+  <p class="section-label">Source Code</p>
   <h2 class="section-heading">Implementasi Python</h2>
 
   <div class="code-tabs">
-    <button class="code-tab active" onclick="switchTab('cleaning')">data_cleaning.py</button>
-    <button class="code-tab" onclick="switchTab('eda')">eda_visualisasi.py</button>
+    <button class="code-tab active" onclick="switchTab('cleaning', this)">data_cleaning.py</button>
+    <button class="code-tab" onclick="switchTab('eda', this)">eda_visualisasi.py</button>
   </div>
 
   <!-- CLEANING -->
@@ -488,7 +638,7 @@ df = pd.<span class="fn">read_csv</span>(<span class="str">'online_food_clean.cs
 
 <span class="cm"># --- Insight 1: Distribusi Usia ---</span>
 age_counts = df[<span class="str">'Age'</span>].<span class="fn">value_counts</span>().<span class="fn">sort_index</span>()
-colors = [<span class="str">'#ff7f0e'</span> <span class="kw">if</span> <span class="num">23</span> &lt;= x &lt;= <span class="num">26</span> <span class="kw">else</span> <span class="str">'#1f77b4'</span>
+colors = [<span class="str">'#b8860b'</span> <span class="kw">if</span> <span class="num">23</span> &lt;= x &lt;= <span class="num">26</span> <span class="kw">else</span> <span class="str">'#1a6b5e'</span>
           <span class="kw">for</span> x <span class="kw">in</span> age_counts.index]
 
 plt.<span class="fn">figure</span>(figsize=(<span class="num">10</span>, <span class="num">6</span>))
@@ -518,15 +668,15 @@ plt.<span class="fn">show</span>()</pre>
   </div>
 </section>
 
-<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+<hr class="divider" />
 
 <!-- KETERBATASAN -->
 <section class="container">
-  <p class="section-title">Refleksi Ilmiah</p>
+  <p class="section-label">Refleksi Ilmiah</p>
   <h2 class="section-heading">Keterbatasan & Rekomendasi Data</h2>
   <div class="limit-grid">
     <div class="limit-box">
-      <h4 style="color:var(--red)">⚠ Keterbatasan Data Saat Ini</h4>
+      <h4 class="danger">⚠ Keterbatasan Data Saat Ini</h4>
       <ul>
         <li>Tidak ada data frekuensi pemesanan per pelanggan</li>
         <li>Tidak ada rating per transaksi (hanya Positive/Negative)</li>
@@ -536,7 +686,7 @@ plt.<span class="fn">show</span>()</pre>
       </ul>
     </div>
     <div class="limit-box">
-      <h4 style="color:var(--green)">✓ Saran Variabel Tambahan</h4>
+      <h4 class="safe">✓ Saran Variabel Tambahan</h4>
       <ul>
         <li>Frekuensi order per bulan (loyalitas pelanggan)</li>
         <li>Rating aplikasi skala 1–5 per transaksi</li>
@@ -548,11 +698,11 @@ plt.<span class="fn">show</span>()</pre>
   </div>
 </section>
 
-<hr class="divider" style="max-width:900px;margin:0 auto 0;" />
+<hr class="divider" />
 
 <!-- OUTCOME -->
 <section class="container">
-  <p class="section-title">Dampak Proyeksi</p>
+  <p class="section-label">Dampak Proyeksi</p>
   <h2 class="section-heading">Expected Outcome Bisnis</h2>
   <div class="outcome-row">
     <div class="outcome-card">
@@ -577,15 +727,15 @@ plt.<span class="fn">show</span>()</pre>
 <!-- FOOTER -->
 <footer>
   <p>Kelompok 6 Beginner · Devira Auriga · Egasilva Najwa · Evanda Nur Haliza · Fauziyah Rahman · Inayatul Fadilah · Sylvia Nur Aini</p>
-  <p style="margin-top:8px;">Dataset: Online Food Business · November 2025 · <a href="index.html">← Kembali ke Portfolio</a></p>
+  <p style="margin-top: 8px;">Dataset: Online Food Business · November 2025 · <a href="index.html">← Kembali ke Portfolio</a></p>
 </footer>
 
 <script>
-  function switchTab(name) {
+  function switchTab(name, el) {
     document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.getElementById('panel-' + name).classList.add('active');
-    event.target.classList.add('active');
+    el.classList.add('active');
   }
 </script>
 
