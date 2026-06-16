@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HHO untuk MOVRP | Evanda Nur Haliza</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1714;
+    --ink-soft: #4A4440;
+    --teal: #2A7C6F;
+    --teal-light: #E8F5F2;
+    --teal-mid: #C2E0DA;
+    --amber: #C87941;
+    --amber-light: #FDF0E6;
+    --rule: #E2DDD8;
+    /* Warna unik project 4: slate-blue / indigo earth */
+    --slate: #3B5068;
+    --slate-light: #EBF0F5;
+    --slate-mid: #B8CCE0;
+    --mono: 'DM Mono', monospace;
+    --serif: 'DM Serif Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 5vw;
+    background: rgba(250,247,242,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-back {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    color: var(--ink-soft); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--slate); }
+  .nav-back svg { width: 16px; height: 16px; }
+  .nav-title { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); letter-spacing: 0.04em; }
+
+  /* HERO */
+  .hero {
+    padding: 8rem 5vw 4rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .hero-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .badge {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 3px;
+  }
+  .badge-slate { background: var(--slate-light); color: var(--slate); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-ink { background: #EDEAE6; color: var(--ink-soft); }
+  .hero-title {
+    font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1; color: var(--ink); margin-bottom: 1.25rem;
+  }
+  .hero-title em { font-style: italic; color: var(--slate); }
+  .hero-desc { font-size: 17px; color: var(--ink-soft); line-height: 1.75; max-width: 680px; margin-bottom: 2.5rem; }
+
+  /* STATS STRIP */
+  .stats-strip {
+    display: flex; gap: 0; border: 1px solid var(--rule);
+    border-radius: 8px; overflow: hidden; margin-bottom: 4rem;
+    background: #fff;
+  }
+  .stat-box {
+    flex: 1; padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--rule);
+  }
+  .stat-box:last-child { border-right: none; }
+  .stat-val { font-family: var(--serif); font-size: 2rem; color: var(--slate); line-height: 1; margin-bottom: 4px; }
+  .stat-key { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 0 5vw 6rem; }
+  .section { margin-bottom: 4rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--slate); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--ink); margin-bottom: 1.5rem; line-height: 1.2;
+  }
+  .prose { font-size: 15px; color: var(--ink-soft); line-height: 1.8; margin-bottom: 1rem; }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  hr.divider { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+  /* PIPELINE STEPS */
+  .pipeline { display: flex; flex-direction: column; gap: 0; }
+  .pipeline-step {
+    display: grid; grid-template-columns: 48px 1fr;
+    gap: 1.25rem; padding: 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pipeline-step:first-child { border-top: 1px solid var(--rule); }
+  .step-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--slate); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-body h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+  .step-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
+  .step-tag {
+    display: inline-block; font-family: var(--mono); font-size: 11px;
+    padding: 2px 8px; border-radius: 3px; background: var(--slate-light);
+    color: var(--slate); margin-top: 6px; margin-right: 4px;
+  }
+
+  /* PHASE CARDS */
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .phase-card {
+    border-radius: 8px; padding: 1.25rem;
+    border: 1px solid var(--rule); background: #fff;
+    transition: box-shadow 0.2s;
+  }
+  .phase-card:hover { box-shadow: 0 4px 16px rgba(59,80,104,0.08); }
+  .phase-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 0.5rem;
+  }
+  .phase-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.75rem; line-height: 1.4; }
+  .phase-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+  .phase-strategies { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--rule); }
+  .strategy-item {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+    padding: 3px 0;
+  }
+  .strategy-item span { color: var(--slate); font-weight: 500; }
+
+  /* RESULTS TABLE */
+  .results-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .results-table th {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    padding: 0.75rem 1rem; text-align: left;
+    border-bottom: 2px solid var(--rule);
+  }
+  .results-table td {
+    padding: 0.875rem 1rem; border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+  .results-table tr:last-child td { border-bottom: none; }
+  .results-table .val { font-family: var(--mono); color: var(--slate); font-weight: 500; }
+  .results-table .best { background: var(--slate-light); }
+  .results-table .best .val { color: var(--slate); }
+
+  /* CODE BLOCK */
+  .code-wrap {
+    background: #1A1714; border-radius: 8px; overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .code-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .code-lang { font-family: var(--mono); font-size: 12px; color: #a09890; }
+  .code-copy {
+    font-family: var(--mono); font-size: 11px; color: #a09890;
+    background: none; border: 1px solid rgba(255,255,255,0.12);
+    padding: 3px 10px; border-radius: 3px; cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .code-copy:hover { color: var(--slate-mid); border-color: var(--slate-mid); }
+  pre {
+    padding: 1.25rem 1.5rem; overflow-x: auto;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7;
+    color: #E8E4E0;
+  }
+  .kw { color: #88C0D0; }
+  .fn { color: #F0C070; }
+  .cm { color: #6A6560; }
+  .st { color: #C8E6A0; }
+  .nm { color: #F5A97F; }
+
+  /* TOOLS */
+  .tools-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tool-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 6px;
+    background: #fff; border: 1px solid var(--rule);
+    font-size: 13px; font-weight: 500; color: var(--ink);
+  }
+  .tool-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--slate); }
+
+  /* ROUTE DISPLAY */
+  .route-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .route-item {
+    background: #fff; border: 1px solid var(--rule); border-radius: 6px;
+    padding: 1rem 1.25rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+  }
+  .route-num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--slate);
+    white-space: nowrap; padding-top: 2px; min-width: 90px;
+  }
+  .route-path {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+    line-height: 1.6; word-break: break-all;
+  }
+  .route-path strong { color: var(--slate); }
+
+  /* NEXT PROJECT */
+  .next-wrap {
+    background: var(--ink); border-radius: 12px;
+    padding: 2.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1.5rem; flex-wrap: wrap;
+    margin-top: 4rem;
+  }
+  .next-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-mid); margin-bottom: 0.5rem; }
+  .next-title { font-family: var(--serif); font-size: 1.4rem; color: #fff; line-height: 1.3; }
+  .btn-next {
+    display: inline-block; background: var(--slate); color: #fff;
+    padding: 0.75rem 1.75rem; border-radius: 4px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    white-space: nowrap; transition: background 0.2s;
+  }
+  .btn-next:hover { background: #2d3f52; }
+
+  @media (max-width: 700px) {
+    .stats-strip { flex-wrap: wrap; }
+    .stat-box { border-right: none; border-bottom: 1px solid var(--rule); min-width: 50%; }
+    .phase-grid { grid-template-columns: 1fr; }
+    .next-wrap { padding: 2rem; }
+    nav .nav-title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Kembali ke Portfolio
+  </a>
+  <span class="nav-title">evanda.nur · project 04</span>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-meta">
+    <span class="badge badge-slate">Optimasi Kombinatorial</span>
+    <span class="badge badge-slate">Metaheuristik</span>
+    <span class="badge badge-amber">Skripsi S-1</span>
+    <span class="badge badge-ink">Universitas Airlangga · 2026</span>
+  </div>
+  <h1 class="hero-title">Harris Hawks Optimization<br>untuk <em>MOVRP</em></h1>
+  <p class="hero-desc">
+    Menerapkan algoritma metaheuristik Harris Hawks Optimization (HHO) yang terinspirasi perilaku berburu elang untuk menyelesaikan Multi-Objective Vehicle Routing Problem, yaitu mengoptimalkan rute distribusi dengan meminimalkan total jarak tempuh dan jumlah kendaraan secara simultan.
+  </p>
+
+  <div class="stats-strip">
+    <div class="stat-box">
+      <div class="stat-val">3</div>
+      <div class="stat-key">Ukuran data</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">100</div>
+      <div class="stat-key">Pelanggan (data besar)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">301.97</div>
+      <div class="stat-key">F terbaik (data besar)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">1000</div>
+      <div class="stat-key">Iterasi optimal</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- LATAR BELAKANG -->
+  <div class="section">
+    <p class="section-label">Konteks</p>
+    <h2 class="section-title">Latar Belakang & Masalah</h2>
+    <p class="prose">
+      Pada era globalisasi, efisiensi sistem distribusi menjadi faktor kunci daya saing perusahaan. Dalam konteks ini, <strong>Vehicle Routing Problem (VRP)</strong> yang pertama kali diusulkan Dantzig &amp; Ramser (1959) berfokus pada penentuan rute distribusi barang ke sejumlah pelanggan menggunakan armada kendaraan guna meminimalkan biaya operasional.
+    </p>
+    <p class="prose">
+      VRP konvensional hanya mempertimbangkan satu tujuan (biaya/jarak), padahal dunia nyata sering melibatkan banyak faktor yang saling bertentangan. Dari situlah berkembang <strong>Multi-Objective VRP (MOVRP)</strong>, yaitu varian VRP yang mengakomodasi beberapa tujuan sekaligus, seperti meminimalkan total jarak tempuh sekaligus meminimalkan jumlah kendaraan yang digunakan.
+    </p>
+    <p class="prose">
+      Berbagai algoritma telah dicoba untuk MOVRP, mulai dari Genetic Algorithm, Ant Colony Optimization, hingga Hybrid ACO, namun masing-masing masih memiliki keterbatasan seperti konvergensi dini, sensitivitas parameter tinggi, dan beban komputasi besar. Sebagai alternatif, penelitian ini menerapkan <strong>Harris Hawks Optimization (HHO)</strong>: algoritma metaheuristik yang meniru perilaku berburu kooperatif elang Harris, dengan kemampuan menyeimbangkan eksplorasi dan eksploitasi secara adaptif sehingga lebih stabil dan efektif menghindari solusi lokal.
+    </p>
+
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--slate);margin:2rem 0 1rem;">Rumusan Masalah</p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-num" style="background:var(--amber);font-size:11px;">01</div>
+        <div class="step-body">
+          <h4>Penerapan Algoritma</h4>
+          <p>Bagaimana menerapkan Harris Hawks Optimization (HHO) untuk menyelesaikan Multi-Objective Vehicle Routing Problem (MOVRP)?</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num" style="background:var(--amber);font-size:11px;">02</div>
+        <div class="step-body">
+          <h4>Pembuatan Program</h4>
+          <p>Bagaimana membuat program Harris Hawks Optimization (HHO) untuk menyelesaikan MOVRP menggunakan Python?</p>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num" style="background:var(--amber);font-size:11px;">03</div>
+        <div class="step-body">
+          <h4>Implementasi pada Kasus</h4>
+          <p>Bagaimana implementasi program HHO untuk menyelesaikan MOVRP pada contoh kasus data kecil, sedang, dan besar?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PIPELINE -->
+  <div class="section">
+    <p class="section-label">Metodologi</p>
+    <h2 class="section-title">Tahapan Algoritma HHO</h2>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Input Data & Inisialisasi Parameter</h4>
+          <p>Membaca data pelanggan (koordinat x,y dan permintaan) serta depot dari file .txt. Menginisialisasi parameter: banyak elang (N), iterasi maksimum (T), batas bawah (LB), dan batas atas (UB). Bobot fungsi tujuan ditetapkan w₁ = 0.001 dan w₂ = 100.</p>
+          <span class="step-tag">Data .txt</span>
+          <span class="step-tag">Kapasitas Kendaraan</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Pembangkitan Posisi Awal Elang</h4>
+          <p>Setiap elang direpresentasikan sebagai vektor bilangan riil acak berdimensi n (jumlah pelanggan). Posisi awal dibangkitkan secara acak pada interval (0,1) sebagai encoding solusi sebelum diubah menjadi urutan rute.</p>
+          <span class="step-tag">Random Initialization</span>
+          <span class="step-tag">Rank-based Encoding</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Decoding: Posisi → Rute Kendaraan</h4>
+          <p>Posisi elang (vektor real) diurutkan berdasarkan ranking untuk mendapatkan urutan kunjungan pelanggan. Urutan ini kemudian dipotong menjadi beberapa rute berdasarkan kapasitas kendaraan, sehingga pelanggan baru dialihkan ke kendaraan berikutnya jika kapasitas terlampaui.</p>
+          <span class="step-tag">Rank Decoding</span>
+          <span class="step-tag">Capacity Constraint</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Evaluasi Fungsi Tujuan Gabungan</h4>
+          <p>Menghitung total jarak Euclidean seluruh rute (f₁) dan menghitung jumlah kendaraan yang digunakan (f₂). Fungsi tujuan gabungan dihitung sebagai F(x) = w₁·f₁ + w₂·f₂, dimana w₂ yang besar memastikan minimisasi kendaraan diprioritaskan.</p>
+          <span class="step-tag">Euclidean Distance</span>
+          <span class="step-tag">Weighted Sum Method</span>
+        </div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Pembaruan Posisi via Eksplorasi & Eksploitasi</h4>
+          <p>Setiap iterasi, energi pelarian mangsa (E) dihitung untuk menentukan fase. Jika |E| ≥ 1, elang melakukan eksplorasi (mencari area baru). Jika |E| &lt; 1, elang mengeksploitasi wilayah sekitar solusi terbaik (X_rabbit) melalui empat strategi besiege. Posisi diperbarui hanya jika menghasilkan nilai F yang lebih kecil.</p>
+          <span class="step-tag">Eksplorasi</span>
+          <span class="step-tag">Eksploitasi</span>
+          <span class="step-tag">Lévy Flight</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- FASE HHO -->
+  <div class="section">
+    <p class="section-label">Mekanisme HHO</p>
+    <h2 class="section-title">Fase Eksplorasi & Eksploitasi</h2>
+    <p class="prose" style="margin-bottom:1.5rem;">Algoritma HHO mengadaptasi perilaku berburu elang Harris secara kolektif. Dua fase utama dan empat strategi eksploitasi bekerja bersama untuk menyeimbangkan pencarian global dan lokal.</p>
+    <div class="phase-grid">
+      <div class="phase-card">
+        <p class="phase-label">Fase 1 · |E| ≥ 1</p>
+        <p class="phase-name">Eksplorasi (Pengintaian)</p>
+        <p class="phase-desc">Elang menjelajahi ruang solusi secara luas, bertengger di lokasi acak atau bergerak menjauh dari X_rabbit untuk menemukan area baru yang menjanjikan.</p>
+        <div class="phase-strategies">
+          <div class="strategy-item"><span>q ≥ 0.5</span> · Bertengger acak di dekat elang lain</div>
+          <div class="strategy-item"><span>q &lt; 0.5</span> · Bergerak menuju rata-rata populasi</div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <p class="phase-label">Fase 2 · |E| &lt; 1</p>
+        <p class="phase-name">Eksploitasi (Pengepungan)</p>
+        <p class="phase-desc">Elang mengepung mangsa (X_rabbit) menggunakan empat strategi bergantung pada nilai energi dan probabilitas kabur mangsa (r).</p>
+        <div class="phase-strategies">
+          <div class="strategy-item"><span>r≥0.5, |E|≥0.5</span> · Soft Besiege</div>
+          <div class="strategy-item"><span>r≥0.5, |E|&lt;0.5</span> · Hard Besiege</div>
+          <div class="strategy-item"><span>r&lt;0.5, |E|≥0.5</span> · Soft Besiege + Lévy Dives</div>
+          <div class="strategy-item"><span>r&lt;0.5, |E|&lt;0.5</span> · Hard Besiege + Lévy Dives</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- HASIL -->
+  <div class="section">
+    <p class="section-label">Hasil Eksperimen</p>
+    <h2 class="section-title">Perbandingan Nilai Fungsi Tujuan</h2>
+    <p class="prose">Program diuji pada tiga skala data dengan variasi N (10, 100, 1000 elang) dan iterasi (10, 100, 1000). Semakin besar N dan iterasi, semakin kecil nilai F yang diperoleh.</p>
+
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin:1.5rem 0 0.75rem;">Data Kecil · 15 pelanggan · kapasitas 105</p>
+    <table class="results-table">
+      <thead><tr><th>Iterasi</th><th>N = 10</th><th>N = 100</th><th>N = 1000</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td class="val">300.313</td><td class="val">300.259</td><td class="val">300.248</td></tr>
+        <tr><td>100</td><td class="val">300.278</td><td class="val">300.249</td><td class="val">300.244</td></tr>
+        <tr class="best"><td><strong>1000</strong></td><td class="val">300.258</td><td class="val">300.250</td><td class="val"><strong>300.236 ✓</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin:2rem 0 0.75rem;">Data Sedang · 50 pelanggan · kapasitas 350</p>
+    <table class="results-table">
+      <thead><tr><th>Iterasi</th><th>N = 10</th><th>N = 100</th><th>N = 1000</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td class="val">301.128</td><td class="val">301.091</td><td class="val">300.967</td></tr>
+        <tr><td>100</td><td class="val">301.150</td><td class="val">300.884</td><td class="val">300.758</td></tr>
+        <tr class="best"><td><strong>1000</strong></td><td class="val">300.912</td><td class="val">300.792</td><td class="val"><strong>300.662 ✓</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);margin:2rem 0 0.75rem;">Data Besar · 100 pelanggan · kapasitas 700</p>
+    <table class="results-table">
+      <thead><tr><th>Iterasi</th><th>N = 10</th><th>N = 100</th><th>N = 1000</th></tr></thead>
+      <tbody>
+        <tr><td>10</td><td class="val">303.377</td><td class="val">303.132</td><td class="val">302.745</td></tr>
+        <tr><td>100</td><td class="val">303.085</td><td class="val">302.651</td><td class="val">302.205</td></tr>
+        <tr class="best"><td><strong>1000</strong></td><td class="val">302.566</td><td class="val">302.419</td><td class="val"><strong>301.972 ✓</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- RUTE TERBAIK -->
+  <div class="section">
+    <p class="section-label">Solusi Terbaik</p>
+    <h2 class="section-title">Rute Optimal Data Kecil (N=1000, Iter=1000)</h2>
+    <p class="prose" style="margin-bottom:1.5rem;">Nilai fungsi tujuan terbaik <strong>F = 300.236</strong> dengan total jarak 236.950 menggunakan hanya 3 kendaraan untuk melayani 15 pelanggan.</p>
+    <div class="route-list">
+      <div class="route-item">
+        <span class="route-num">Kendaraan 1</span>
+        <span class="route-path"><strong>0</strong> → 4 → 3 → 7 → 1 → 2 → 5 → <strong>0</strong></span>
+      </div>
+      <div class="route-item">
+        <span class="route-num">Kendaraan 2</span>
+        <span class="route-path"><strong>0</strong> → 13 → 15 → 14 → 12 → <strong>0</strong></span>
+      </div>
+      <div class="route-item">
+        <span class="route-num">Kendaraan 3</span>
+        <span class="route-path"><strong>0</strong> → 8 → 10 → 11 → 9 → 6 → <strong>0</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- KODE -->
+  <div class="section">
+    <p class="section-label">Implementasi</p>
+    <h2 class="section-title">Cuplikan Kode Python</h2>
+    <p class="prose">Program dibangun modular dengan 9 prosedur utama menggunakan Python murni (tanpa library eksternal khusus ML). Encoding solusi menggunakan rank-based decoding untuk mengonversi posisi kontinu menjadi urutan diskrit.</p>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">python · decode_and_route.py</span>
+        <button class="code-copy" onclick="copyCode(this)">copy</button>
+      </div>
+      <pre><span class="cm"># Konversi posisi elang (real) → urutan pelanggan → rute</span>
+<span class="kw">def</span> <span class="fn">decode_rank</span>(posisi_elang):
+    n = <span class="fn">len</span>(posisi_elang)
+    rank_pos = [<span class="nm">0</span>] * n
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="fn">range</span>(n):
+        rank = <span class="nm">1</span>
+        <span class="kw">for</span> l <span class="kw">in</span> <span class="fn">range</span>(n):
+            <span class="kw">if</span> posisi_elang[l] &lt; posisi_elang[j]:
+                rank += <span class="nm">1</span>
+        rank_pos[j] = rank
+    <span class="kw">return</span> rank_pos
+
+<span class="kw">def</span> <span class="fn">bentuk_rute_berdasarkan_kapasitas</span>(urutan, permintaan, kapasitas):
+    rute, rute_sekarang, muatan = [], [], <span class="nm">0</span>
+    <span class="kw">for</span> idx <span class="kw">in</span> urutan:
+        <span class="kw">if</span> muatan + permintaan[idx] &gt; kapasitas:
+            rute.<span class="fn">append</span>(rute_sekarang)
+            rute_sekarang, muatan = [idx], permintaan[idx]
+        <span class="kw">else</span>:
+            rute_sekarang.<span class="fn">append</span>(idx)
+            muatan += permintaan[idx]
+    <span class="kw">if</span> rute_sekarang: rute.<span class="fn">append</span>(rute_sekarang)
+    <span class="kw">return</span> rute</pre>
+    </div>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="code-lang">python · hho_update.py</span>
+        <button class="code-copy" onclick="copyCode(this)">copy</button>
+      </div>
+      <pre><span class="cm"># Update posisi elang: fase eksplorasi vs eksploitasi</span>
+E0 = <span class="nm">2</span> * random.<span class="fn">random</span>() - <span class="nm">1</span>
+E  = <span class="nm">2</span> * E0 * (<span class="nm">1</span> - it / maksiter)  <span class="cm"># energi menurun seiring iterasi</span>
+
+<span class="kw">if</span> <span class="fn">abs</span>(E) &gt;= <span class="nm">1</span>:  <span class="cm"># EKSPLORASI</span>
+    <span class="kw">for</span> d <span class="kw">in</span> <span class="fn">range</span>(dim):
+        elang_baru[i][d] = x_rand[d] - r1 * <span class="fn">abs</span>(
+            x_rand[d] - <span class="nm">2</span> * r2 * elang[i][d]
+        )
+<span class="kw">elif</span> r &gt;= <span class="nm">0.5</span> <span class="kw">and</span> <span class="fn">abs</span>(E) &lt; <span class="nm">0.5</span>:  <span class="cm"># Hard Besiege</span>
+    <span class="kw">for</span> d <span class="kw">in</span> <span class="fn">range</span>(dim):
+        elang_baru[i][d] = x_rabbit[d] - E * <span class="fn">abs</span>(
+            x_rabbit[d] - elang[i][d]
+        )
+<span class="kw">else</span>:  <span class="cm"># Soft/Hard Besiege + Lévy Flight</span>
+    LF = <span class="fn">levy_flight</span>(dim)
+    Y  = [x_rabbit[d] - E * <span class="fn">abs</span>(J*x_rabbit[d] - elang[i][d])
+          <span class="kw">for</span> d <span class="kw">in</span> <span class="fn">range</span>(dim)]
+    Z  = [Y[d] + S * LF[d] <span class="kw">for</span> d <span class="kw">in</span> <span class="fn">range</span>(dim)]</pre>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TOOLS -->
+  <div class="section">
+    <p class="section-label">Tech Stack</p>
+    <h2 class="section-title">Tools & Library</h2>
+    <div class="tools-wrap">
+      <div class="tool-chip"><span class="dot"></span>Python 3</div>
+      <div class="tool-chip"><span class="dot"></span>math</div>
+      <div class="tool-chip"><span class="dot"></span>random</div>
+      <div class="tool-chip"><span class="dot"></span>tkinter</div>
+      <div class="tool-chip"><span class="dot"></span>os</div>
+      <div class="tool-chip"><span class="dot"></span>Visual Studio Code</div>
+      <div class="tool-chip"><span class="dot"></span>Kaggle Dataset (Solomon VRPTW)</div>
+    </div>
+  </div>
+
+  <!-- BACK TO PORTFOLIO -->
+  <div class="next-wrap">
+    <div>
+      <p class="next-label">Kembali ke Portfolio</p>
+      <p class="next-title">Lihat semua proyek<br>Evanda Nur Haliza</p>
+    </div>
+    <a href="index.html" class="btn-next">← Ke Halaman Utama</a>
+  </div>
+
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
