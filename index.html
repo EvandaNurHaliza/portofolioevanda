@@ -271,14 +271,27 @@
     text-align: center;
     line-height: 1.4;
   }
-  .project-thumb.teal { 
+  .project-thumb.kmeans { 
   background: linear-gradient(135deg, rgba(42,124,111,0.75) 0%, rgba(26,92,82,0.75) 100%),
   url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80') center/cover no-repeat; 
-}
-  .project-thumb.amber { background: linear-gradient(135deg, #C87941 0%, #a05e2e 100%); }
-  .project-thumb.ink { background: linear-gradient(135deg, rgba(42,124,111,0.75) 0%, rgba(26,92,82,0.75) 100%),
-    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80')
+  }
+  .project-thumb.forecasting {
+    background: linear-gradient(
+      135deg,
+      rgba(200,121,65,0.75) 0%,
+      rgba(160,94,46,0.75) 100% 
+    ),
+    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80')
+    center/cover no-repeat;
+  }
+  .project-thumb.food { background: linear-gradient(135deg, rgba(214,88,65,0.75) 0%, rgba(161,57,39,0.75) 100%),
+    url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600&q=80')
     center/cover no-repeat; }
+  .project-thumb.hho { background: linear-gradient(135deg, rgba(80,80,120,0.75) 0%, rgba(40,40,70,0.75) 100%),
+    url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')
+    center/cover no-repeat;
+  }
+
   .project-body { padding: 1.5rem; }
   .project-type {
     font-family: var(--mono);
@@ -472,7 +485,7 @@
   <div class="projects-grid">
 
     <div class="project-card">
-      <div class="project-thumb teal">K-Means Customer Segmentation</div>
+      <div class="project-thumb kmeans">K-Means Customer Segmentation</div>
       <div class="project-body">
         <p class="project-type">Clustering · Machine Learning</p>
         <h3>Segmentasi Pelanggan Berdasarkan Usia, Pendapatan & Spending Score</h3>
@@ -499,7 +512,7 @@
     </div>
 
     <div class="project-card">
-      <div class="project-thumb amber">Linear Regression Forecasting</div>
+      <div class="project-thumb forecasting">Linear Regression Forecasting</div>
       <div class="project-body">
         <p class="project-type">Forecasting · Regression</p>
         <h3>Prediksi Volume Barang (Ton) di Pelabuhan Kalimas</h3>
@@ -525,7 +538,7 @@
     </div>
 
     <div class="project-card">
-      <div class="project-thumb ink">Data Storytelling: Online Food Business</div>
+      <div class="project-thumb food">Data Storytelling: Online Food Business</div>
       <div class="project-body">
         <p class="project-type">Data Storytelling · EDA · Visualisasi</p>
         <h3>Analisis Perilaku Pelanggan Platform Makanan Online</h3>
@@ -550,7 +563,45 @@
       </div>
     </div>
 
-  </div>
+    <div class="project-card">
+      <div class="project-thumb hho">Harris Hawks Optimization</div>
+      <div class="project-body">
+        <p class="project-type">Optimization · Metaheuristic</p>
+
+        <h3>Harris Hawks Optimization untuk Multi-Objective Vehicle Routing Problem</h3>
+
+        <p>
+      Mengimplementasikan algoritma Harris Hawks Optimization (HHO) untuk menyelesaikan Multi-Objective Vehicle Routing Problem (MOVRP) dengan tujuan mengoptimalkan rute distribusi berdasarkan beberapa kriteria secara simultan.
+        </p>
+
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Optimization</span>
+          <span class="project-tag">HHO</span>
+          <span class="project-tag">MOVRP</span>
+          <span class="project-tag">Metaheuristic</span>
+        </div>
+
+        <div class="project-metrics">
+          <div class="metric">
+            <div class="metric-val">HHO</div>
+            <div class="metric-key">Algorithm</div>
+          </div>
+
+          <div class="metric">
+            <div class="metric-val">MOVRP</div>
+            <div class="metric-key">Case Study</div>
+          </div>
+        </div>
+
+        <a href="project4.html"
+          style="display:inline-block;margin-top:0.75rem;background:var(--teal);color:#fff;padding:0.5rem 1.25rem;border-radius:4px;font-size:13px;font-weight:600;text-decoration:none;">
+          Lihat Detail →
+        </a>
+
+      </div>
+    </div>
+  </div> 
 </section>
 
 <hr class="section-divider">
